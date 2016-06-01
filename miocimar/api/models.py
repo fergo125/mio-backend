@@ -17,4 +17,19 @@ class LocalForecastEntry(models.Model):
     wind_direction = models.FloatField()
     wind_speed = models.FloatField()
     wind_burst = models.FloatField()
+
+
+class TideRegion(models.Model):
+    id=models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    icon_url = models.CharField(max_length=100)
+
+class TideEntry(models.Model):
+    id = models.AutoField(primary_key=True)
+    tide_region = models.ForeignKey(TideRegion, on_delete =models.CASCADE)
+    date = models.DateField()
+    tide_height = models.FloatField()
+    is_high_tide = models.BooleanField()
+
+
 # Create your models here.
