@@ -4,8 +4,6 @@ from django.db import models
 class LocalForecast(models.Model):
     id= models.AutoField(primary_key=True)
     name= models.CharField(max_length=50)
-    #icon_url = models.ImageField(upload_to='images')
-    #Existe la posibilidad de guardar la imagen de esta manera
     icon_url= models.CharField(max_length=100)
 
 class LocalForecastEntry(models.Model):
