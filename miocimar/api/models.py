@@ -26,7 +26,7 @@ class TideRegion(models.Model):
 class TideEntry(models.Model):
     id = models.AutoField(primary_key=True)
     tide_region = models.ForeignKey(TideRegion, on_delete =models.CASCADE)
-    date = models.DateField()
+    date = models.DateTimeField()
     tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
 
