@@ -47,7 +47,7 @@ coverage.xml
 *.pot
 *.sqlite3
 
-
+api/test.py
 # Sphinx documentation
 docs/_build/
 
