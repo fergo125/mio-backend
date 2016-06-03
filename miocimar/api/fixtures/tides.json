@@ -39,4 +39,22 @@
         "tide_height": 0.2,
         "is_high_tide": false
     }
+}, {
+    "model": "api.TideEntry",
+    "pk": 4,
+    "fields": {
+        "tide_region": 1,
+        "date": "2016-06-23T22:43:17+00:00",
+        "tide_height": 2.3,
+        "is_high_tide": true
+    }
+}, {
+    "model": "api.TideEntry",
+    "pk": 5,
+    "fields": {
+        "tide_region": 1,
+        "date": "2016-03-03T22:43:17+00:00",
+        "tide_height": 2.3,
+        "is_high_tide": true
+    }
 }]
