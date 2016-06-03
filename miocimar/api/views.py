@@ -10,8 +10,11 @@ import datetime
 class TideWeek(APIView):
     """docstring for TideWeek"""
     def get(self, request, pk, format=None):
-        end_date = datetime.date.today() + datetime.timedelta(days=8)
-        tides = TideEntry.objects.filter(date__gt=datetime.date.today()).filter(date__lt=end_date).filter(tide_region=pk)
+        start_date = datetime.date.today() - datetime.timedelta(days=1)
+        end_date = datetime.date.today() + datetime.timedelta(days=7)
+        tides = TideEntry.objects \
+            .filter(date__gt=start_date) \
+            .filter(date__lt=end_date) \
+            .filter(tide_region=pk)
         serializer = TideEntrySerializer(tides, many=True)
         return Response(serializer.data)
-
