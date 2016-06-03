@@ -1,0 +1,42 @@
+[{
+    "model": "api.TideRegion",
+    "pk": 1,
+    "fields": {
+        "name": "Golfo Santa Elena",
+        "icon_url": "http://icon.com"
+    }
+}, {
+    "model": "api.TideRegion",
+    "pk": 2,
+    "fields": {
+        "name": "Bahía Culebra",
+        "icon_url": "http://icon.com"
+    }
+}, {
+    "model": "api.TideEntry",
+    "pk": 1,
+    "fields": {
+        "tide_region": 1,
+        "date": "2016-06-03T16:43:17+00:00",
+        "tide_height": 2.5,
+        "is_high_tide": true
+    }
+}, {
+    "model": "api.TideEntry",
+    "pk": 2,
+    "fields": {
+        "tide_region": 1,
+        "date": "2016-06-03T22:43:17+00:00",
+        "tide_height": 2.3,
+        "is_high_tide": true
+    }
+}, {
+    "model": "api.TideEntry",
+    "pk": 3,
+    "fields": {
+        "tide_region": 1,
+        "date": "2016-06-04T04:43:17+00:00",
+        "tide_height": 0.2,
+        "is_high_tide": false
+    }
+}]
