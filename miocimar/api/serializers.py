@@ -13,3 +13,4 @@ class TideEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = TideEntry
         fields = ('id','tide_region','date','tide_height','is_high_tide')
+
