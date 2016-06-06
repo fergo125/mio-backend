@@ -15,4 +15,11 @@ class TideWeek(APIView):
         tides = TideEntry.objects.filter(date__gt=datetime.date.today()).filter(date__lt=end_date).filter(tide_region=pk)
         serializer = TideEntrySerializer(tides,many=True)
         return Response(serializer.data)
+
+class LocalForecastList(APIView):
+    """docstring for LocalForecastList"""
+    def get(self, request, format=None):
+        localForecast = LocalForecast.objects.all()
+        serializer = LocalForecastSerializer(localForecast,many=True)
+        return Response(serializer.data)
 # Create your views here.
