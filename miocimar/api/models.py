@@ -2,9 +2,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 class LocalForecast(models.Model):
-    id= models.AutoField(primary_key=True)
-    name= models.CharField(max_length=50)
-    icon_url= models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    icon_url = models.CharField(max_length=100)
 
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
@@ -19,7 +19,7 @@ class LocalForecastEntry(models.Model):
     wind_burst = models.FloatField()
 
 class TideRegion(models.Model):
-    id=models.AutoField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     icon_url = models.CharField(max_length=100)
 
@@ -29,6 +29,3 @@ class TideEntry(models.Model):
     date = models.DateTimeField()
     tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
-
-
-# Create your models here.
