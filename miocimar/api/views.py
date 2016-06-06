@@ -18,3 +18,11 @@ class TideWeek(APIView):
             .filter(tide_region=pk)
         serializer = TideEntrySerializer(tides, many=True)
         return Response(serializer.data)
+
+class LocalForecastList(APIView):
+    """docstring for LocalForecastList"""
+    def get(self, request, format=None):
+        localForecast = LocalForecast.objects.all()
+        serializer = LocalForecastSerializer(localForecast,many=True)
+        return Response(serializer.data)
+# Create your views here.

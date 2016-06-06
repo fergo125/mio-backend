@@ -14,3 +14,7 @@ class TideEntrySerializer(serializers.ModelSerializer):
         model = TideEntry
         fields = ('id','tide_region','date','tide_height','is_high_tide')
 
+class LocalForecastSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocalForecast
+        fields=('id','name','icon_url')
