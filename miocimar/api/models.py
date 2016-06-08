@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
-
 from django.db import models
+
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -29,3 +29,16 @@ class TideEntry(models.Model):
     date = models.DateTimeField()
     tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
+
+class RegionalForecast(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+    icon_url = models.CharField(max_length=100)
+
+class RegionalForecastEntry(models.Model):
+    id = models.AutoField(primary_key=True)
+    regional_forecast = models.ForeignKey(RegionalForecast, on_delete =models.CASCADE)
+    date = models.DateField()
+    title = models.CharField(max_length=100)
+    text = models.TextField()
+    animation_url = models.CharField(max_length=100)
