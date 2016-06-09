@@ -42,3 +42,10 @@ class RegionalForecastEntry(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField()
     animation_url = models.CharField(max_length=100)
+
+class Warning(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=200)
+    level = models.IntegerField()
+    date = models.DateField()
+    text = models.TextField()
