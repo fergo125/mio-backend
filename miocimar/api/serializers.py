@@ -6,15 +6,15 @@ from django.views.decorators.csrf import csrf_exempt
 class TideRegionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TideRegion
-        fields = ('id','name','icon_url')
-@csrf_exempt
-class TideEntrySerializer(serializers.ModelSerializer):
+        fields = ('url','id','name','icon_url')
+
+class TideEntrySerializer(serializers.HyperlinkedModelSerializer):
     #id = serializers.HyperlinkedIdentityField(many=True, view_name='tides-week')
     class Meta:
         model = TideEntry
         fields = ('id','tide_region','date','tide_height','is_high_tide')
 
-class LocalForecastSerializer(serializers.ModelSerializer):
+class LocalForecastSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LocalForecast
-        fields=('id','name','icon_url')
+        fields=('url','id','name','icon_url')
