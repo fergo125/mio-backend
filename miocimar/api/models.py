@@ -4,7 +4,7 @@ from django.db import models
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=100)
+    icon_url = models.CharField(max_length=200)
 
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
@@ -21,7 +21,7 @@ class LocalForecastEntry(models.Model):
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=100)
+    icon_url = models.CharField(max_length=200)
     def __unicode__(self):
         return self.name
 
@@ -35,7 +35,7 @@ class TideEntry(models.Model):
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=100)
+    icon_url = models.CharField(max_length=200)
 
 class RegionalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
@@ -43,7 +43,7 @@ class RegionalForecastEntry(models.Model):
     date = models.DateField()
     title = models.CharField(max_length=100)
     text = models.TextField()
-    animation_url = models.CharField(max_length=100)
+    animation_url = models.CharField(max_length=200)
 
 class Warning(models.Model):
     id = models.AutoField(primary_key=True)
