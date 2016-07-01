@@ -9,7 +9,7 @@ class LocalForecast(models.Model):
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
     local_forecast = models.ForeignKey(LocalForecast, on_delete =models.CASCADE)
-    date = models.DateField()
+    date = models.DateTimeField()
     wave_direction = models.FloatField()
     wave_height_sig = models.FloatField()
     wave_height_max = models.FloatField()

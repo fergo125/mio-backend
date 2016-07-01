@@ -1,0 +1,6 @@
+[{"model":"api.LocalForecast",
+  "pk":1,"fields":{
+  "name":"Pacifico Norte Norte",
+  "icon_url":"www.example.com"
+}
+  }]

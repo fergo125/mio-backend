@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 class TideRegionViewSet(ModelViewSet):
@@ -16,6 +17,7 @@ class TideRegionViewSet(ModelViewSet):
     queryset = TideRegion.objects.all()
     serializer_class = TideRegionSerializer
 
+    @csrf_exempt
     @detail_route(methods=['get'])
     def weekly_view(self, request, **kwargs):
         """Obtain a list of tide entries for this tide region for this
@@ -41,3 +43,36 @@ class LocalForecastsViewSet(ModelViewSet):
     """ Local forecasts view set """
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
+
+class LocalForecastEntryViewSet(ModelViewSet):
+    queryset = LocalForecastEntry.objects.all()
+    serializer_class = LocalForecastSerializer
+    @csrf_exempt
+    @detail_route(methods=['put'])
+    def put(self,request,**kwargs):
+        newEntries = LocalForecastEntrySerializer(request.data)
+        print(newEntries)
+        existingEntries = LocalForecastEntry.objects.all()
+        for newEntry in newEntries:
+            modifyEntry = existingEntries.filter(local_forecast=newEntry['local_forecast']).filter(date=newEntry['date'])
+            if newEntry is not None :
+                # modifyEntry.wave_direction = newEntry['wave_direction']
+                # modifyEntry.wave_height_sig = newEntry['wave_height_sig']
+                # modifyEntry.wave_height_max = newEntry['wave_height_max']
+                # modifyEntry.wave_period  = newEntry['wave_period']
+                # modifyEntry.wind_direction = newEntry['wind_direction']
+                # modifyEntry.wind_speed = newEntry['wind_speed']
+                # modifyEntry.wind_burst = newEntry['wind_burst']
+                # modifyEntry.save()
+                modifyEntry.update(wave_direction = newEntry['wave_direction'],wave_height_sig = newEntry['wave_height_sig'], \
+                wave_period  = newEntry['wave_period'],wave_height_max = newEntry['wave_height_max'], \
+                wind_direction = newEntry['wind_direction'],wind_speed = newEntry['wind_speed'], \
+                wind_burst = newEntry['wind_burst'])
+            else:
+                newEntry.save()
+                # entry = LocalForecastEntry(local_forecast = newEntry['local_forecast'],date = newEntry['date'],\
+                # wave_direction = newEntry['wave_direction'],wave_height_sig = newEntry['wave_height_sig'], \
+                # wave_period  = newEntry['wave_period'],wave_height_max = newEntry['wave_height_max'], \
+                # wind_direction = newEntry['wind_direction'],wind_speed = newEntry['wind_speed'], \
+                # wind_burst = newEntry['wind_burst'])
+                entry.save()
