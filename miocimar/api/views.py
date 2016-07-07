@@ -44,35 +44,47 @@ class LocalForecastsViewSet(ModelViewSet):
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
 
-class LocalForecastEntryViewSet(ModelViewSet):
-    queryset = LocalForecastEntry.objects.all()
-    serializer_class = LocalForecastSerializer
-    @csrf_exempt
-    @detail_route(methods=['put'])
-    def put(self,request,**kwargs):
-        newEntries = LocalForecastEntrySerializer(request.data)
-        print(newEntries)
-        existingEntries = LocalForecastEntry.objects.all()
-        for newEntry in newEntries:
-            modifyEntry = existingEntries.filter(local_forecast=newEntry['local_forecast']).filter(date=newEntry['date'])
-            if newEntry is not None :
-                # modifyEntry.wave_direction = newEntry['wave_direction']
-                # modifyEntry.wave_height_sig = newEntry['wave_height_sig']
-                # modifyEntry.wave_height_max = newEntry['wave_height_max']
-                # modifyEntry.wave_period  = newEntry['wave_period']
-                # modifyEntry.wind_direction = newEntry['wind_direction']
-                # modifyEntry.wind_speed = newEntry['wind_speed']
-                # modifyEntry.wind_burst = newEntry['wind_burst']
-                # modifyEntry.save()
-                modifyEntry.update(wave_direction = newEntry['wave_direction'],wave_height_sig = newEntry['wave_height_sig'], \
-                wave_period  = newEntry['wave_period'],wave_height_max = newEntry['wave_height_max'], \
-                wind_direction = newEntry['wind_direction'],wind_speed = newEntry['wind_speed'], \
-                wind_burst = newEntry['wind_burst'])
-            else:
-                newEntry.save()
-                # entry = LocalForecastEntry(local_forecast = newEntry['local_forecast'],date = newEntry['date'],\
-                # wave_direction = newEntry['wave_direction'],wave_height_sig = newEntry['wave_height_sig'], \
-                # wave_period  = newEntry['wave_period'],wave_height_max = newEntry['wave_height_max'], \
-                # wind_direction = newEntry['wind_direction'],wind_speed = newEntry['wind_speed'], \
-                # wind_burst = newEntry['wind_burst'])
-                entry.save()
+class LocalForecastEntryViewSet(ViewSet):
+    def list(self, request):
+        entries = LocalForecastEntry.objects.all()
+        serializer = LocalForecastEntrySerializer(entries, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serialized_list = LocalForecastEntrySerializer(data=request.data, many=True)
+        # Check if list could be serialized correctly
+        if serialized_list.is_valid():
+
+            # Run one by one each new object
+            for serialized_object in serialized_list.data:
+
+                # Check if this entry already exists (using region and date)
+                forecast_region  = serialized_object['local_forecast']
+                forecast_date    = serialized_object['date']
+                existing_entries = LocalForecastEntry.objects  \
+                    .filter(local_forecast=forecast_region)  \
+                    .filter(date=forecast_date)
+
+                if existing_entries is not None and len(existing_entries) > 0:
+
+                    # There was an entry for it already
+                    existing_entry = existing_entries[0]
+                    update_entry = LocalForecastEntrySerializer(existing_entry, data=serialized_object)
+                    if update_entry.is_valid():
+                        update_entry.save()
+                    else:
+                        # TODO: Update this to a logging statement later
+                        print "Couldn't serialize and update this entry: " + str(serialized_object)
+                else:
+
+                    # There was no previous object
+                    new_entry = LocalForecastEntrySerializer(data=serialized_object)
+                    if new_entry.is_valid():
+                        new_entry.save()
+                    else:
+                        # TODO: Update this to a logging statement later
+                        print "Couldn't serialize and create this entry: " + str(serialized_object)
+
+            return Response({"result": "success", "message": "Successfully saved"})
+        else:
+            return Response({"result": "error", "message": "Invalid serializer data"})
