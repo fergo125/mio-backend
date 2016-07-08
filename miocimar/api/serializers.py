@@ -19,8 +19,13 @@ class LocalForecastSerializer(serializers.HyperlinkedModelSerializer):
         model = LocalForecast
         fields=('url','id','name','icon_url')
 
-class LocalForecastEntrySerializer(serializers.ModelSerializer):
+class LocalForecastEntryCreateSerializer(serializers.ModelSerializer):
     local_forecast = serializers.PrimaryKeyRelatedField(queryset=LocalForecast.objects.all())
     class Meta:
         model = LocalForecastEntry
         fields=('local_forecast', 'date', 'wave_direction', 'wave_height_sig', 'wave_height_max', 'wave_period', 'wind_direction', 'wind_speed', 'wind_burst')
+
+class LocalForecastEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocalForecastEntry
+        fields=('pk', 'date', 'wave_direction', 'wave_height_sig', 'wave_height_max', 'wave_period', 'wind_direction', 'wind_speed', 'wind_burst')

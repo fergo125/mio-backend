@@ -4,7 +4,7 @@ from rest_framework.test import APITestCase
 
 
 class APIClientTestCase(APITestCase):
-    fixtures = ["tides.json"]
+    fixtures = ["local_forecasts", "tides.json"]
 
     def setUp(self):
         self.client = APIClient()
