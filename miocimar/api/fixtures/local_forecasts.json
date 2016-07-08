@@ -1,0 +1,486 @@
+[
+    {
+        "model": "api.LocalForecast",
+        "pk": 1,
+        "fields": {
+            "name": "Pacífico Norte-Norte",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 2,
+        "fields": {
+            "name": "Pacífico Norte-Centro",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_centro_3x_keayhq.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 3,
+        "fields": {
+            "name": "Pacífico Norte-Sur",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_sur_3x_ctg8e5.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 4,
+        "fields": {
+            "name": "Puntarenas",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_puntarenas_3x_sz90rp.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 5,
+        "fields": {
+            "name": "Pacífico Central",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_central_3x_unzz4m.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 6,
+        "fields": {
+            "name": "Pacífico Sur",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini__pacifico_sur_3x_nkbczr.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 7,
+        "fields": {
+            "name": "Caribe",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_bahia_caribe_3x_r5blkr.png"
+        }
+    },
+    {
+        "model": "api.LocalForecast",
+        "pk": 8,
+        "fields": {
+            "name": "Isla del Coco",
+            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_ilsa_del_coco_3x_o54rjw.png"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 1,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.582016820940774,
+            "wave_period": "16.520401000976562",
+            "wave_height_max": "1.5860041379928589",
+            "wind_burst": 11.156621867223008,
+            "wind_direction": -108.01927607620236,
+            "wave_height_sig": "1.2200031280517578",
+            "date": "2016-06-20T00:00:00+00:00",
+            "wave_direction": "217.7294921875"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 2,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 9.723569944829737,
+            "wave_period": "16.079198837280273",
+            "wave_height_max": "1.779964804649353",
+            "wind_burst": 12.640640928278659,
+            "wind_direction": -122.11760336915266,
+            "wave_height_sig": "1.369203805923462",
+            "date": "2016-06-20T06:00:00+00:00",
+            "wave_direction": "216.59909057617188"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 3,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 11.861295190528972,
+            "wave_period": "14.628799438476562",
+            "wave_height_max": "2.039445161819458",
+            "wind_burst": 15.419683747687664,
+            "wind_direction": -118.61658540064744,
+            "wave_height_sig": "1.5688040256500244",
+            "date": "2016-06-21T00:00:00+00:00",
+            "wave_direction": "215.845947265625"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 4,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 11.441555737733342,
+            "wave_period": "17.7032527923584",
+            "wave_height_max": "2.255764961242676",
+            "wind_burst": 14.874022459053345,
+            "wind_direction": -123.02207685389116,
+            "wave_height_sig": "1.7352039813995361",
+            "date": "2016-06-21T06:00:00+00:00",
+            "wave_direction": "220.49472045898438"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 5,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 7.355045859286541,
+            "wave_period": "15.476799964904785",
+            "wave_height_max": "1.8252041339874268",
+            "wind_burst": 9.561559617072504,
+            "wind_direction": -124.83971344561955,
+            "wave_height_sig": "1.4040031433105469",
+            "date": "2016-06-20T12:00:00+00:00",
+            "wave_direction": "216.837890625"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 6,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.89483949713312,
+            "wave_period": "15.235198974609375",
+            "wave_height_max": "1.8054431676864624",
+            "wind_burst": 11.563291346273056,
+            "wind_direction": -118.20810666268576,
+            "wave_height_sig": "1.388802409172058",
+            "date": "2016-06-20T18:00:00+00:00",
+            "wave_direction": "216.2691192626953"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 7,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 5.522226425755366,
+            "wave_period": "20.368398666381836",
+            "wave_height_max": "2.1221253871917725",
+            "wind_burst": 7.178894353481976,
+            "wind_direction": -130.80222834786582,
+            "wave_height_sig": "1.632404088973999",
+            "date": "2016-06-21T12:00:00+00:00",
+            "wave_direction": "224.78463745117188"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 8,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 4.813988423154786,
+            "wave_period": "19.577198028564453",
+            "wave_height_max": "2.074284553527832",
+            "wind_burst": 6.258184950101222,
+            "wind_direction": -93.24177642277735,
+            "wave_height_sig": "1.5956034660339355",
+            "date": "2016-06-21T18:00:00+00:00",
+            "wave_direction": "223.17465209960938"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 9,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 7.332983838552423,
+            "wave_period": "19.1315975189209",
+            "wave_height_max": "2.1746461391448975",
+            "wind_burst": 9.53287899011815,
+            "wind_direction": -105.2412820140241,
+            "wave_height_sig": "1.6728047132492065",
+            "date": "2016-06-22T00:00:00+00:00",
+            "wave_direction": "222.90904235839844"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 10,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 9.141480831570144,
+            "wave_period": "18.646799087524414",
+            "wave_height_max": "2.3140063285827637",
+            "wind_burst": 11.883925081041188,
+            "wind_direction": -116.6982030085699,
+            "wave_height_sig": "1.780004858970642",
+            "date": "2016-06-22T06:00:00+00:00",
+            "wave_direction": "222.77061462402344"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 11,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 3.3047404608853865,
+            "wave_period": "18.235198974609375",
+            "wave_height_max": "2.2989256381988525",
+            "wind_burst": 4.296162599151002,
+            "wind_direction": -99.66578256543619,
+            "wave_height_sig": "1.768404245376587",
+            "date": "2016-06-22T12:00:00+00:00",
+            "wave_direction": "221.2138671875"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 12,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 1.825467505864329,
+            "wave_period": "17.757598876953125",
+            "wave_height_max": "2.2952845096588135",
+            "wind_burst": 2.373107757623628,
+            "wind_direction": 14.822866801313387,
+            "wave_height_sig": "1.76560378074646",
+            "date": "2016-06-22T18:00:00+00:00",
+            "wave_direction": "221.9710693359375"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 12,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 0.661853077737673,
+            "wave_period": "17.506400108337402",
+            "wave_height_max": "2.323104739189148",
+            "wind_burst": 0.8604090010589749,
+            "wind_direction": -27.67385456948638,
+            "wave_height_sig": "1.787003755569458",
+            "date": "2016-06-23T00:00:00+00:00",
+            "wave_direction": "222.5696792602539"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 13,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 5.062887817147629,
+            "wave_period": "17.25520133972168",
+            "wave_height_max": "2.3509249687194824",
+            "wind_burst": 6.581754162291918,
+            "wind_direction": -123.52278949781659,
+            "wave_height_sig": "1.808403730392456",
+            "date": "2016-06-23T06:00:00+00:00",
+            "wave_direction": "223.1682891845703"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 14,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 3.372055721453046,
+            "wave_period": "17.04400062561035",
+            "wave_height_max": "2.4362051486968994",
+            "wind_burst": 4.38367243788896,
+            "wind_direction": -125.34717230395826,
+            "wave_height_sig": "1.8740040063858032",
+            "date": "2016-06-23T12:00:00+00:00",
+            "wave_direction": "221.4259033203125"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 15,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 3.4099545048088302,
+            "wave_period": "17.48400115966797",
+            "wave_height_max": "2.5500848293304443",
+            "wind_burst": 4.43294085625148,
+            "wind_direction": -123.58687534559832,
+            "wave_height_sig": "1.9616037607192993",
+            "date": "2016-06-23T18:00:00+00:00",
+            "wave_direction": "224.1834716796875"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 16,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.390250008915359,
+            "wave_period": "17.983600616455078",
+            "wave_height_max": "2.7502858638763428",
+            "wind_burst": 10.907325011589966,
+            "wind_direction": -119.82511248858748,
+            "wave_height_sig": "2.1156046390533447",
+            "date": "2016-06-24T00:00:00+00:00",
+            "wave_direction": "224.60867309570312"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 17,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.532236335227587,
+            "wave_period": "19.204008102416992",
+            "wave_height_max": "2.8454465866088867",
+            "wind_burst": 11.091907235795864,
+            "wind_direction": -128.08921821470673,
+            "wave_height_sig": "2.188805103302002",
+            "date": "2016-06-24T06:00:00+00:00",
+            "wave_direction": "225.28184509277344"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 18,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 6.720912468786544,
+            "wave_period": "19.83639907836914",
+            "wave_height_max": "2.8485665321350098",
+            "wind_burst": 8.737186209422507,
+            "wind_direction": -126.43612245532529,
+            "wave_height_sig": "2.1912050247192383",
+            "date": "2016-06-24T12:00:00+00:00",
+            "wave_direction": "225.53823852539062"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 19,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 9.30043851366595,
+            "wave_period": "18.845199584960938",
+            "wave_height_max": "2.844925880432129",
+            "wind_burst": 12.090570067765736,
+            "wind_direction": -117.35271492895878,
+            "wave_height_sig": "2.1884045600891113",
+            "date": "2016-06-24T18:00:00+00:00",
+            "wave_direction": "224.69786071777344"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 20,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.652162663854426,
+            "wave_period": "18.56559944152832",
+            "wave_height_max": "2.773686408996582",
+            "wind_burst": 11.247811463010754,
+            "wind_direction": -113.70616846203538,
+            "wave_height_sig": "2.1336047649383545",
+            "date": "2016-06-25T00:00:00+00:00",
+            "wave_direction": "224.39105224609375"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 21,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 8.25052545108162,
+            "wave_period": "17.846397399902344",
+            "wave_height_max": "2.6582460403442383",
+            "wind_burst": 10.725683086406105,
+            "wind_direction": -123.2188129793246,
+            "wave_height_sig": "2.044804573059082",
+            "date": "2016-06-25T06:00:00+00:00",
+            "wave_direction": "223.45266723632812"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 22,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 3.4297564429384004,
+            "wave_period": "17.550399780273438",
+            "wave_height_max": "2.4533650875091553",
+            "wind_burst": 4.458683375819921,
+            "wind_direction": -109.70946076100519,
+            "wave_height_sig": "1.8872039318084717",
+            "date": "2016-06-25T12:00:00+00:00",
+            "wave_direction": "223.1770782470703"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 23,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 2.6892691891438307,
+            "wave_period": "17.36319923400879",
+            "wave_height_max": "2.2557637691497803",
+            "wind_burst": 3.49604994588698,
+            "wind_direction": -32.074590013917096,
+            "wave_height_sig": "1.7352027893066406",
+            "date": "2016-06-25T18:00:00+00:00",
+            "wave_direction": "223.50665283203125"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 24,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 5.687403633992228,
+            "wave_period": "16.733198165893555",
+            "wave_height_max": "2.106003522872925",
+            "wind_burst": 7.393624724189897,
+            "wind_direction": -98.53020252917203,
+            "wave_height_sig": "1.6200026273727417",
+            "date": "2016-06-26T00:00:00+00:00",
+            "wave_direction": "221.38992309570312"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 25,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 7.093698983641885,
+            "wave_period": "16.471599578857422",
+            "wave_height_max": "2.0134437084198",
+            "wind_burst": 9.221808678734451,
+            "wind_direction": -118.55055494926874,
+            "wave_height_sig": "1.5488028526306152",
+            "date": "2016-06-26T06:00:00+00:00",
+            "wave_direction": "221.50909423828125"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 26,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 4.141952877551123,
+            "wave_period": "16.27400016784668",
+            "wave_height_max": "1.8860435485839844",
+            "wind_burst": 5.384538740816461,
+            "wind_direction": -98.27575206449761,
+            "wave_height_sig": "1.4508026838302612",
+            "date": "2016-06-26T12:00:00+00:00",
+            "wave_direction": "222.01150512695312"
+        }
+    },
+    {
+        "model": "api.LocalForecastEntry",
+        "pk": 27,
+        "fields": {
+            "local_forecast": 1,
+            "wind_speed": 3.6141637408642375,
+            "wave_period": "15.669198989868164",
+            "wave_height_max": "1.7716424465179443",
+            "wind_burst": 4.698412863123509,
+            "wind_direction": 27.494556106257548,
+            "wave_height_sig": "1.3628020286560059",
+            "date": "2016-06-26T18:00:00+00:00",
+            "wave_direction": "219.32232666015625"
+        }
+    }
+]
