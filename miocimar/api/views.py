@@ -18,7 +18,6 @@ class TideRegionViewSet(ModelViewSet):
     queryset = TideRegion.objects.all()
     serializer_class = TideRegionSerializer
 
-    @csrf_exempt
     @detail_route(methods=['get'])
     def weekly_view(self, request, **kwargs):
         """Obtain a list of tide entries for this tide region for this
@@ -45,6 +44,22 @@ class LocalForecastsViewSet(ModelViewSet):
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
 
+    @detail_route(methods=['get'])
+    def weekly_view(self, request, **kwargs):
+        """Obtain a list of local forecast entries for this local forecast
+        region for this week
+        """
+        local_forecast_region = self.get_object()
+        pk = local_forecast_region.pk
+        start_date = datetime.date.today() - datetime.timedelta(days=1)
+        end_date = datetime.date.today() + datetime.timedelta(days=7)
+        local_forecast_entries = LocalForecastEntry.objects \
+            .filter(date__gt=start_date) \
+            .filter(date__lt=end_date) \
+            .filter(local_forecast=pk)
+        serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
+        return Response(serializer.data)
+
 class LocalForecastEntryViewSet(ModelViewSet):
     queryset = LocalForecastEntry.objects.all()
     serializer_class = LocalForecastEntrySerializer
@@ -55,7 +70,7 @@ class LocalForecastEntryViewSet(ModelViewSet):
         return Response(serializer.data)'''
 
     def create(self, request):
-        serialized_list = LocalForecastEntrySerializer(data=request.data, many=True)
+        serialized_list = LocalForecastEntryCreateSerializer(data=request.data, many=True)
         # Check if list could be serialized correctly
         if serialized_list.is_valid():
 
@@ -73,7 +88,7 @@ class LocalForecastEntryViewSet(ModelViewSet):
 
                     # There was an entry for it already
                     existing_entry = existing_entries[0]
-                    update_entry = LocalForecastEntrySerializer(existing_entry, data=serialized_object)
+                    update_entry = LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
                     if update_entry.is_valid():
                         update_entry.save()
                     else:
@@ -82,7 +97,7 @@ class LocalForecastEntryViewSet(ModelViewSet):
                 else:
 
                     # There was no previous object
-                    new_entry = LocalForecastEntrySerializer(data=serialized_object)
+                    new_entry = LocalForecastEntryCreateSerializer(data=serialized_object)
                     if new_entry.is_valid():
                         new_entry.save()
                     else:
