@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 
@@ -44,11 +45,14 @@ class LocalForecastsViewSet(ModelViewSet):
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
 
-class LocalForecastEntryViewSet(ViewSet):
-    def list(self, request):
+class LocalForecastEntryViewSet(ModelViewSet):
+    queryset = LocalForecastEntry.objects.all()
+    serializer_class = LocalForecastEntrySerializer
+
+    '''def list(self, request):
         entries = LocalForecastEntry.objects.all()
         serializer = LocalForecastEntrySerializer(entries, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data)'''
 
     def create(self, request):
         serialized_list = LocalForecastEntrySerializer(data=request.data, many=True)

@@ -6,6 +6,9 @@ class LocalForecast(models.Model):
     name = models.CharField(max_length=50)
     icon_url = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return self.name
+
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
     local_forecast = models.ForeignKey(LocalForecast, on_delete =models.CASCADE)
@@ -22,6 +25,7 @@ class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     icon_url = models.CharField(max_length=200)
+
     def __unicode__(self):
         return self.name
 
@@ -37,6 +41,9 @@ class RegionalForecast(models.Model):
     name = models.CharField(max_length=50)
     icon_url = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return self.name
+
 class RegionalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
     regional_forecast = models.ForeignKey(RegionalForecast, on_delete =models.CASCADE)
@@ -51,3 +58,6 @@ class Warning(models.Model):
     level = models.IntegerField()
     date = models.DateField()
     text = models.TextField()
+
+    def __unicode__(self):
+        return self.title
