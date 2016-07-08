@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 class TideRegionViewSet(ModelViewSet):
@@ -16,6 +17,7 @@ class TideRegionViewSet(ModelViewSet):
     queryset = TideRegion.objects.all()
     serializer_class = TideRegionSerializer
 
+    @csrf_exempt
     @detail_route(methods=['get'])
     def weekly_view(self, request, **kwargs):
         """Obtain a list of tide entries for this tide region for this
@@ -41,3 +43,48 @@ class LocalForecastsViewSet(ModelViewSet):
     """ Local forecasts view set """
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
+
+class LocalForecastEntryViewSet(ViewSet):
+    def list(self, request):
+        entries = LocalForecastEntry.objects.all()
+        serializer = LocalForecastEntrySerializer(entries, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serialized_list = LocalForecastEntrySerializer(data=request.data, many=True)
+        # Check if list could be serialized correctly
+        if serialized_list.is_valid():
+
+            # Run one by one each new object
+            for serialized_object in serialized_list.data:
+
+                # Check if this entry already exists (using region and date)
+                forecast_region  = serialized_object['local_forecast']
+                forecast_date    = serialized_object['date']
+                existing_entries = LocalForecastEntry.objects  \
+                    .filter(local_forecast=forecast_region)  \
+                    .filter(date=forecast_date)
+
+                if existing_entries is not None and len(existing_entries) > 0:
+
+                    # There was an entry for it already
+                    existing_entry = existing_entries[0]
+                    update_entry = LocalForecastEntrySerializer(existing_entry, data=serialized_object)
+                    if update_entry.is_valid():
+                        update_entry.save()
+                    else:
+                        # TODO: Update this to a logging statement later
+                        print "Couldn't serialize and update this entry: " + str(serialized_object)
+                else:
+
+                    # There was no previous object
+                    new_entry = LocalForecastEntrySerializer(data=serialized_object)
+                    if new_entry.is_valid():
+                        new_entry.save()
+                    else:
+                        # TODO: Update this to a logging statement later
+                        print "Couldn't serialize and create this entry: " + str(serialized_object)
+
+            return Response({"result": "success", "message": "Successfully saved"})
+        else:
+            return Response({"result": "error", "message": "Invalid serializer data"})
