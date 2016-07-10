@@ -17,7 +17,7 @@ class TideEntrySerializer(serializers.HyperlinkedModelSerializer):
 class LocalForecastSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LocalForecast
-        fields=('url','id','name','icon_url')
+        fields=('url', 'id', 'name', 'icon_url', 'map_url')
 
 class LocalForecastEntryCreateSerializer(serializers.ModelSerializer):
     local_forecast = serializers.PrimaryKeyRelatedField(queryset=LocalForecast.objects.all())

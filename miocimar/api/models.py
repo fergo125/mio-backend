@@ -5,6 +5,7 @@ class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     icon_url = models.CharField(max_length=200)
+    map_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
