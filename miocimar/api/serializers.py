@@ -29,3 +29,8 @@ class LocalForecastEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = LocalForecastEntry
         fields=('pk', 'date', 'wave_direction', 'wave_height_sig', 'wave_height_max', 'wave_period', 'wind_direction', 'wind_speed', 'wind_burst')
+
+class WaveWarningSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = WaveWarning
+        fields = ('url','id','title','level','date','text')

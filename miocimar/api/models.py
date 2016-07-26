@@ -53,7 +53,7 @@ class RegionalForecastEntry(models.Model):
     text = models.TextField()
     animation_url = models.CharField(max_length=200)
 
-class Warning(models.Model):
+class WaveWarning(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     level = models.IntegerField()
