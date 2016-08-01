@@ -39,6 +39,11 @@ class TideEntryViewSet(ModelViewSet):
     queryset = TideEntry.objects.all()
     serializer_class = TideEntrySerializer
 
+class WaveWarningViewSet(ModelViewSet):
+    """ Warning entries view set, mainly for creating new items."""
+    queryset = WaveWarning.objects.all()
+    serializer_class = WaveWarningSerializer
+
 class LocalForecastsViewSet(ModelViewSet):
     """ Local forecasts view set """
     queryset = LocalForecast.objects.all()

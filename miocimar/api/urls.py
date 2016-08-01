@@ -7,6 +7,7 @@ router = DefaultRouter()
 router.register(r'tide_regions', views.TideRegionViewSet)
 router.register(r'tide_entries', views.TideEntryViewSet)
 router.register(r'local_forecasts', views.LocalForecastsViewSet)
+router.register(r'warnings', views.WaveWarningViewSet)
 router.register(r'local_forecast_entry', views.LocalForecastEntryViewSet, 'local_forecast_entry')
 
 urlpatterns = [
