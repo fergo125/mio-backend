@@ -65,6 +65,7 @@ class LocalForecastsViewSet(ModelViewSet):
         serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
         return Response(serializer.data)
 
+
 class LocalForecastEntryViewSet(ModelViewSet):
     queryset = LocalForecastEntry.objects.all()
     serializer_class = LocalForecastEntrySerializer
@@ -112,3 +113,10 @@ class LocalForecastEntryViewSet(ModelViewSet):
             return Response({"result": "success", "message": "Successfully saved"})
         else:
             return Response({"result": "error", "message": "Invalid serializer data"})
+
+class UpdateDataViewSet(ViewSet):
+    #@detail_route(methods=['post'])
+    def create(self,request):
+        print(request.data)
+        content = {'working': 'OK'}
+        return Response(content,status=status.HTTP_200_OK)
