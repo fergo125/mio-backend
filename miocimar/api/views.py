@@ -117,6 +117,6 @@ class LocalForecastEntryViewSet(ModelViewSet):
 class UpdateDataViewSet(ViewSet):
     #@detail_route(methods=['post'])
     def create(self,request):
-        #print(request.data)
+        print(request.data)
         content = {'working': 'OK'}
         return Response(content,status=status.HTTP_200_OK)
