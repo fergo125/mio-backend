@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render
 from api.models import *
 from api.serializers import *
@@ -10,6 +12,8 @@ from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+
+logger = logging.getLogger("mioLogger")
 
 class TideRegionViewSet(ModelViewSet):
     """Tide regions view set, which also includes a weekly view for
@@ -115,8 +119,10 @@ class LocalForecastEntryViewSet(ModelViewSet):
             return Response({"result": "error", "message": "Invalid serializer data"})
 
 class UpdateDataViewSet(ViewSet):
-    #@detail_route(methods=['post'])
-    def create(self,request):
-        print(request.data)
-        content = {'working': 'OK'}
-        return Response(content,status=status.HTTP_200_OK)
+    def create(self, request):
+        node_id = ""
+        if "node_id" in request.data:
+            node_id = request.data["node_id"]
+        logger.info("Update Data got node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
