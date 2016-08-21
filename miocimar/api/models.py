@@ -4,9 +4,19 @@ from django.db import models
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
-    map_url = models.CharField(max_length=200)
-
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Region icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
+    # Map
+    small_map_url = models.CharField(max_length=200)
+    medium_map_url = models.CharField(max_length=200)
+    large_map_url = models.CharField(max_length=200)
+    # This comment should be updated each time a new Drupal
+    # article appears
+    comment = models.CharField(max_length=2000)
     def __unicode__(self):
         return self.name
 
@@ -25,7 +35,12 @@ class LocalForecastEntry(models.Model):
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Region icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
@@ -40,7 +55,12 @@ class TideEntry(models.Model):
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Type icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
