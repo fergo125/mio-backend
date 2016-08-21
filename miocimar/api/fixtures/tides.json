@@ -4,7 +4,9 @@
         "pk": 1,
         "fields": {
             "name": "Golfo Santa Elena",
-            "icon_url": "http://icon.com"
+            "small_icon_url": "http://icon.com",
+            "medium_icon_url": "http://icon.com",
+            "large_icon_url": "http://icon.com"
         }
     },
     {
@@ -12,7 +14,9 @@
         "pk": 2,
         "fields": {
             "name": "Bahía Culebra",
-            "icon_url": "http://icon.com"
+            "small_icon_url": "http://icon.com",
+            "medium_icon_url": "http://icon.com",
+            "large_icon_url": "http://icon.com"
         }
     },
     {

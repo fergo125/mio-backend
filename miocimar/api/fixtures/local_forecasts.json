@@ -4,7 +4,9 @@
         "pk": 1,
         "fields": {
             "name": "Pacífico Norte-Norte",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png"
         }
     },
     {
@@ -12,7 +14,9 @@
         "pk": 2,
         "fields": {
             "name": "Pacífico Norte-Centro",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_centro_3x_keayhq.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_centro_3x_keayhq.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_centro_3x_keayhq.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_centro_3x_keayhq.png"
         }
     },
     {
@@ -20,7 +24,9 @@
         "pk": 3,
         "fields": {
             "name": "Pacífico Norte-Sur",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_sur_3x_ctg8e5.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_sur_3x_ctg8e5.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_sur_3x_ctg8e5.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_pacifico_norte_sur_3x_ctg8e5.png"
         }
     },
     {
@@ -28,7 +34,9 @@
         "pk": 4,
         "fields": {
             "name": "Puntarenas",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_puntarenas_3x_sz90rp.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_puntarenas_3x_sz90rp.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_puntarenas_3x_sz90rp.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_puntarenas_3x_sz90rp.png"
         }
     },
     {
@@ -36,7 +44,9 @@
         "pk": 5,
         "fields": {
             "name": "Pacífico Central",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_central_3x_unzz4m.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_central_3x_unzz4m.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_central_3x_unzz4m.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_central_3x_unzz4m.png"
         }
     },
     {
@@ -44,7 +54,9 @@
         "pk": 6,
         "fields": {
             "name": "Pacífico Sur",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini__pacifico_sur_3x_nkbczr.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini__pacifico_sur_3x_nkbczr.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini__pacifico_sur_3x_nkbczr.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini__pacifico_sur_3x_nkbczr.png"
         }
     },
     {
@@ -52,7 +64,9 @@
         "pk": 7,
         "fields": {
             "name": "Caribe",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_bahia_caribe_3x_r5blkr.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_bahia_caribe_3x_r5blkr.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_bahia_caribe_3x_r5blkr.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_bahia_caribe_3x_r5blkr.png"
         }
     },
     {
@@ -60,7 +74,9 @@
         "pk": 8,
         "fields": {
             "name": "Isla del Coco",
-            "icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_ilsa_del_coco_3x_o54rjw.png"
+            "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_ilsa_del_coco_3x_o54rjw.png",
+            "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_ilsa_del_coco_3x_o54rjw.png",
+            "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891010/mapa_mini_ilsa_del_coco_3x_o54rjw.png"
         }
     },
     {
