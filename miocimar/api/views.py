@@ -118,11 +118,33 @@ class LocalForecastEntryViewSet(ModelViewSet):
         else:
             return Response({"result": "error", "message": "Invalid serializer data"})
 
-class UpdateDataViewSet(ViewSet):
+# Drupal connection endpoints
+class UpdateLocalForecastDataViewSet(ViewSet):
     def create(self, request):
-        node_id = ""
-        if "node_id" in request.data:
-            node_id = request.data["node_id"]
-        logger.info("Update Data got node id: {0}".format(node_id))
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Local Forecast update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
+
+class UpdateRegionalForecastDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
+
+class UpdateWarningDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Warning update, node id: {0}".format(node_id))
         content = {'working': 'OK', "node_id": node_id}
         return Response(content, status=status.HTTP_200_OK)
