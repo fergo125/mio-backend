@@ -21,6 +21,7 @@ class LocalForecastEntry(models.Model):
     wind_direction = models.FloatField()
     wind_speed = models.FloatField()
     wind_burst = models.FloatField()
+    text = models.TextField()
 
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
