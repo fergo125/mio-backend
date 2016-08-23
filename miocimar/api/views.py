@@ -112,3 +112,11 @@ class LocalForecastEntryViewSet(ModelViewSet):
             return Response({"result": "success", "message": "Successfully saved"})
         else:
             return Response({"result": "error", "message": "Invalid serializer data"})
+
+class RegionalForecastViewSet(ModelViewSet):
+    queryset = RegionalForecast.objects.all()
+    serializer_class = RegionalForecastSerializer
+
+class RegionalForecastEntryViewSet(ModelViewSet):
+    queryset = RegionalForecastEntry.objects.all()
+    serializer_class = RegionalForecastEntrySerializer
