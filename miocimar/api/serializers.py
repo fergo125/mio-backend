@@ -12,7 +12,7 @@ class TideEntrySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TideEntry
 
-class LocalForecastSerializer(serializers.HyperlinkedModelSerializer):
+class LocalForecastSerializer(serializers.ModelSerializer):
     class Meta:
         model = LocalForecast
 
