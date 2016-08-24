@@ -4,22 +4,25 @@ from django.db import models
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
-    map_url = models.CharField(max_length=200)
-
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Region icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
+    # Map
+    small_map_url = models.CharField(max_length=200)
+    medium_map_url = models.CharField(max_length=200)
+    large_map_url = models.CharField(max_length=200)
+    # This comment should be updated each time a new Drupal
+    # article appears
+    comment = models.CharField(max_length=2000)
     def __unicode__(self):
         return self.name
-
-class LocalForecastTextEntry(models.Model):
-    id = models.AutoField(primary_key=True)
-    publish_date = models.DateTimeField()
-    local_forecast = models.ForeignKey(LocalForecast,on_delete= models.CASCADE)
-    text = models.TextField()
 
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
     local_forecast = models.ForeignKey(LocalForecast, on_delete =models.CASCADE)
-    local_forecast_text_entry = models.ForeignKey(LocalForecastTextEntry, on_delete= models.SET_NULL)
     date = models.DateTimeField()
     wave_direction = models.FloatField()
     wave_height_sig = models.FloatField()
@@ -32,7 +35,12 @@ class LocalForecastEntry(models.Model):
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Region icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
@@ -47,18 +55,20 @@ class TideEntry(models.Model):
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    icon_url = models.CharField(max_length=200)
+    # If available
+    english_name = models.CharField(max_length=50)
+    # Type icon
+    small_icon_url = models.CharField(max_length=200)
+    medium_icon_url = models.CharField(max_length=200)
+    large_icon_url = models.CharField(max_length=200)
+
+    # These values are updated for each new Drupal node
+    date = models.DateField()
+    text = models.TextField()
+    animation_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
-
-class RegionalForecastEntry(models.Model):
-    id = models.AutoField(primary_key=True)
-    regional_forecast = models.ForeignKey(RegionalForecast, on_delete =models.CASCADE)
-    date = models.DateField()
-    title = models.CharField(max_length=100)
-    text = models.TextField()
-    animation_url = models.CharField(max_length=200)
 
 class WaveWarning(models.Model):
     id = models.AutoField(primary_key=True)
