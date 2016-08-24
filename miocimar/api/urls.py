@@ -10,7 +10,6 @@ router.register(r'local_forecasts', views.LocalForecastsViewSet)
 router.register(r'warnings', views.WaveWarningViewSet)
 router.register(r'local_forecast_entry', views.LocalForecastEntryViewSet, 'local_forecast_entry')
 router.register(r'regional_forecasts', views.RegionalForecastViewSet, 'regional_forecasts')
-router.register(r'regional_forecast_entry', views.RegionalForecastEntryViewSet, 'regional_forecast_entry')
 
 urlpatterns = [
     url(r'^', include(router.urls))

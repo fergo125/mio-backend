@@ -30,10 +30,6 @@ class RegionalForecastSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RegionalForecast
 
-class RegionalForecastEntrySerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = RegionalForecastEntry
-
 class WaveWarningSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = WaveWarning

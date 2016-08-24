@@ -116,7 +116,3 @@ class LocalForecastEntryViewSet(ModelViewSet):
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
     serializer_class = RegionalForecastSerializer
-
-class RegionalForecastEntryViewSet(ModelViewSet):
-    queryset = RegionalForecastEntry.objects.all()
-    serializer_class = RegionalForecastEntrySerializer

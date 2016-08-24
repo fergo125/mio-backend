@@ -62,16 +62,13 @@ class RegionalForecast(models.Model):
     medium_icon_url = models.CharField(max_length=200)
     large_icon_url = models.CharField(max_length=200)
 
-    def __unicode__(self):
-        return self.name
-
-class RegionalForecastEntry(models.Model):
-    id = models.AutoField(primary_key=True)
-    regional_forecast = models.ForeignKey(RegionalForecast, on_delete =models.CASCADE)
+    # These values are updated for each new Drupal node
     date = models.DateField()
-    title = models.CharField(max_length=100)
     text = models.TextField()
     animation_url = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
 
 class WaveWarning(models.Model):
     id = models.AutoField(primary_key=True)
