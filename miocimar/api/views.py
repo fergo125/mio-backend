@@ -150,3 +150,7 @@ class UpdateWarningDataViewSet(ViewSet):
         logger.debug("Warning update, node id: {0}".format(node_id))
         content = {'working': 'OK', "node_id": node_id}
         return Response(content, status=status.HTTP_200_OK)
+
+class RegionalForecastViewSet(ModelViewSet):
+    queryset = RegionalForecast.objects.all()
+    serializer_class = RegionalForecastSerializer
