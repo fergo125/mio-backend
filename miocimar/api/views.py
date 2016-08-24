@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render
 from api.models import *
 from api.serializers import *
@@ -12,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import automation.data_update as data_updater
 import json
+
+logger = logging.getLogger("mioLogger")
 
 class TideRegionViewSet(ModelViewSet):
     """Tide regions view set, which also includes a weekly view for
@@ -116,11 +120,33 @@ class LocalForecastEntryViewSet(ModelViewSet):
         else:
             return Response({"result": "error", "message": "Invalid serializer data"})
 
-class UpdateDataViewSet(ViewSet):
-    #@detail_route(methods=['post'])
-    def create(self,request):
-        print(request.body)
-        nodeID = json.loads(request.body)['nodeID']
-        data_updater.getNodeData(nodeID)
-        content = {'working': 'OK'}
-        return Response(content,status=status.HTTP_200_OK)
+# Drupal connection endpoints
+class UpdateLocalForecastDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Local Forecast update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
+
+class UpdateRegionalForecastDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
+
+class UpdateWarningDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Warning update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
