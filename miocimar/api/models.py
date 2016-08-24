@@ -10,9 +10,16 @@ class LocalForecast(models.Model):
     def __unicode__(self):
         return self.name
 
+class LocalForecastTextEntry(models.Model):
+    id = models.AutoField(primary_key=True)
+    publish_date = models.DateTimeField()
+    local_forecast = models.ForeignKey(LocalForecast,on_delete= models.CASCADE)
+    text = models.TextField()
+
 class LocalForecastEntry(models.Model):
     id = models.AutoField(primary_key=True)
     local_forecast = models.ForeignKey(LocalForecast, on_delete =models.CASCADE)
+    local_forecast_text_entry = models.ForeignKey(LocalForecastTextEntry, on_delete= models.SET_NULL)
     date = models.DateTimeField()
     wave_direction = models.FloatField()
     wave_height_sig = models.FloatField()
@@ -21,7 +28,6 @@ class LocalForecastEntry(models.Model):
     wind_direction = models.FloatField()
     wind_speed = models.FloatField()
     wind_burst = models.FloatField()
-    text = models.TextField()
 
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)

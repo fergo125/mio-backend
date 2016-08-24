@@ -10,6 +10,8 @@ from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+import automation.data_update as data_updater
+import json
 
 class TideRegionViewSet(ModelViewSet):
     """Tide regions view set, which also includes a weekly view for
@@ -117,6 +119,8 @@ class LocalForecastEntryViewSet(ModelViewSet):
 class UpdateDataViewSet(ViewSet):
     #@detail_route(methods=['post'])
     def create(self,request):
-        print(request.data)
+        print(request.body)
+        nodeID = json.loads(request.body)['nodeID']
+        data_updater.getNodeData(nodeID)
         content = {'working': 'OK'}
         return Response(content,status=status.HTTP_200_OK)
