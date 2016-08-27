@@ -73,6 +73,7 @@ class RegionalForecast(models.Model):
 class WaveWarning(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200)
     level = models.IntegerField()
     date = models.DateField()
     text = models.TextField()
