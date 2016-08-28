@@ -75,7 +75,7 @@ class WaveWarning(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200)
     level = models.IntegerField()
-    date = models.DateField()
+    date = models.DateTimeField()
     text = models.TextField()
 
     def __unicode__(self):
