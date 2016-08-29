@@ -126,7 +126,7 @@ class UpdateLocalForecastDataViewSet(ViewSet):
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
 
-        node_id = request.data["nodeID"]
+        node_id = request.data["node_id"]
         data_updater.localForecastUpdate(node_id)
         logger.debug("Local Forecast update, node id: {0}".format(node_id))
         content = {'working': 'OK', "node_id": node_id}
