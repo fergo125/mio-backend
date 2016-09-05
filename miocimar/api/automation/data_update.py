@@ -6,9 +6,10 @@ import requests
 import sys
 import os
 import api.serializers as serializers
+import tempfile
 #sys.path.append(os.path.join('..','..'))
-from csv_utilities import FileUtilities as file_utilities
-from csv_utilities import CSVProcessor as csv_processor
+from csv_utilities import FileUtilities
+from csv_utilities import CSVProcessor
 from api.models import LocalForecast
 
 
@@ -47,11 +48,14 @@ def getNodeData(node_id):
 def getParam(path, data):
     for i in path:
         print("Data navigation with i="+i+":")
-        data = data[i]
-        if type(data) is list:
-            data = data[0]
+        if i in data:
+            data = data[i]
+            if type(data) is list:
+                data = data[0]
+                print(data)
             print(data)
-        print(data)
+        else:
+            return None
     return data
 
 def getNodeTaxonomyID(data):
@@ -63,20 +67,47 @@ def getNodeTaxonomyID(data):
 
 
 def localForecastUpdate(node_id):
+    #The API does a request to the drupal webpage to get node content.
     node_data = getNodeData(node_id)
+
+    #Gets the tax_id to see what kind of content is.
     tax_id = getNodeTaxonomyID(node_data)
-    model_data_list = list()
+    model_data_dict = dict()
+
+    file_utilities = FileUtilities()
+    csv_processor = CSVProcessor()
+    #Using the path vector declared above, the attributes of interest
+    #are collected from json data downloaded from the content publication.
+    #Each kind of content has the data paths necessary according to its model.
     for i in data_path_local:
-        model_data_list.append({i:getParam(paths[i],node_data)})
-    file_name = model_data_list[1]
-    file_url = API_DIR+'sites/default/files/csvs/'+file_name
-    csv_file = file()
-    file_utilities.downloadFile(file_url,csv_file)
-    csv_data_json = csv_processor.processData(csv_file,tax_id)
-    serialized_list = serserializers.LocalForecastEntry(data=csv_data_json, many=True)
+        model_data_dict[i]=getParam(paths[i],node_data)
+
+    if model_data_dict['csv_file'] is not None:
+        file_name = model_data_dict['csv_file']
+        file_url = API_DIR+'sites/default/files/csvs/'+file_name
+        csv_data_json = None
+        with tempfile.TemporaryFile() as csv_file:
+            if file_utilities.downloadFile(file_url,csv_file):
+                print("csv downaloaded")
+                csv_data_json = csv_processor.processData(csv_file,model_data_dict['local_forecast_taxonomy_id'])
+        if csv_data_json is not None:
+            save_local_forecast_entries(csv_data_json)
+    if model_data_dict['text'] is not None:
+        data_json = csv_processor.processData(csv_file,tax_id)
+        updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
+    print(model_data_dict)
+
+def regionalForecastUpdate():
+    pass
+
+def warningUpdate():
+    pass
+
+def save_local_forecast_entries(data_json):
+    serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
     if serialized_list.is_valid():
 
-        # Run one by one each new object
+        #Run one by one each new object
         for serialized_object in serialized_list.data:
 
             # Check if this entry already exists (using region and date)
@@ -105,31 +136,8 @@ def localForecastUpdate(node_id):
                 else:
                     # TODO: Update this to a logging statement later
                     print "Couldn't serialize and create this entry: " + str(serialized_object)
-    print(model_data_list)
 
-def regionalForecastUpdate():
-    pass
-
-def warningUpdate():
-    pass
-
-def downloadFile(url,f):
-    f.truncate()
-    response = requests.get(url,stream=True)
-    print('Codigo de estado:',response.status_code)
-    if(response.status_code == 200):
-        total_length = response.headers.get('content-length')
-        if total_length is None: # no content length header
-            f.write(response.content)
-        else:
-            dl = 0
-            total_length = int(total_length)
-            for data in response.iter_content():
-                dl += len(data)
-                f.write(data)
-                done = int(50 * dl / total_length)
-                sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
-                sys.stdout.flush()
-        return True
-    else:
-        return False
+def updateLocalForecastText(new_text,forecast_id):
+    localForecast = LocalForecast.objects.filter(pk=forecast_id)
+    localForecast.comment = new_text
+    localForecast.save()
