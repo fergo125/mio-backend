@@ -7,43 +7,43 @@ import sys
 import os
 #Time,sig_wav_ht_surface,max_wav_ht_surface,peak_wav_dir_surface,peak_wav_per_surface,u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
 
-def main():
-	# gatherer = FileGatherer()
-	processor = CSVProcessor()
-	APIDIR="http://localhost:8000/api/local_forecast_entry/"
-
-	# filesToDownload = gatherer.fileList()
-	# filenames =gatherer.fileToArray(filesToDownload)
-	# API_ROOT=""
-	# filenames = gatherer.fileToArray('allentries.json')
-	# if gatherer.fileDownloader(filenames):
-	# 	print("Archios descargados satisfactoriamente")
-	# else:
-	# 	print("no se pudo descargar los archivos")
-	for fn in os.listdir("csvs/"):
-		filedir = "csvs/"+fn
-		if os.path.isfile(filedir):
-			data=''
-
-			if fn[0:2] == "ca":
-				data = processor.processData(filedir,7)
-			if fn[0:2] == "cp":
-				data = processor.processData(filedir,2)
-			if fn[0:2] == "ic":
-				data = processor.processData(filedir,8)
-			if fn[0:2] == "np":
-				data = processor.processData(filedir,1)
-			if fn[0:2] == "pc":
-				data = processor.processData(filedir,5)
-			if fn[0:2] == "pu":
-				data = processor.processData(filedir,4)
-			if fn[0:2] == "sp":
-				data = processor.processData(filedir,3)
-			if fn[0:2] == "ps":
-				data = processor.processData(filedir,6)
-			print(data)
-			processor.publishData(APIDIR,data)
-
+# def main():
+# 	# gatherer = FileGatherer()
+# 	processor = CSVProcessor()
+# 	APIDIR="http://localhost:8000/api/local_forecast_entry/"
+#
+# 	# filesToDownload = gatherer.fileList()
+# 	# filenames =gatherer.fileToArray(filesToDownload)
+# 	# API_ROOT=""
+# 	# filenames = gatherer.fileToArray('allentries.json')
+# 	# if gatherer.fileDownloader(filenames):
+# 	# 	print("Archios descargados satisfactoriamente")
+# 	# else:
+# 	# 	print("no se pudo descargar los archivos")
+# 	for fn in os.listdir("csvs/"):
+# 		filedir = "csvs/"+fn
+# 		if os.path.isfile(filedir):
+# 			data=''
+#
+# 			if fn[0:2] == "ca":
+# 				data = processor.processData(filedir,7)
+# 			if fn[0:2] == "cp":
+# 				data = processor.processData(filedir,2)
+# 			if fn[0:2] == "ic":
+# 				data = processor.processData(filedir,8)
+# 			if fn[0:2] == "np":
+# 				data = processor.processData(filedir,1)
+# 			if fn[0:2] == "pc":
+# 				data = processor.processData(filedir,5)
+# 			if fn[0:2] == "pu":
+# 				data = processor.processData(filedir,4)
+# 			if fn[0:2] == "sp":
+# 				data = processor.processData(filedir,3)
+# 			if fn[0:2] == "ps":
+# 				data = processor.processData(filedir,6)
+# 			print(data)
+# 			processor.publishData(APIDIR,data)
+#
 
 	# date
     # wave_height_sig
@@ -178,6 +178,6 @@ class CSVProcessor:
 		except:
 			newdate=date
 		return newDate
-
-if __name__== "__main__":
-	main()
+# 
+# if __name__== "__main__":
+# 	main()

@@ -128,9 +128,13 @@ class UpdateLocalForecastDataViewSet(ViewSet):
 
         node_id = request.data["node_id"]
         logger.debug("Local Forecast update, node id: {0}".format(node_id))
-        data_updater.localForecastUpdate(node_id)
-        content = {'working': 'OK', "node_id": node_id}
-        return Response(content, status=status.HTTP_200_OK)
+        status_return = status.HTTP_200_OK
+        if data_updater.localForecastUpdate(node_id):
+            content = {'Updated':node_id}
+        else:
+            content = {'Update':node_id,'Message':'node_id not found'}
+            status_return = status.HTTP_404_NOT_FOUND
+        return Response(content, status=status_return)
 
 class UpdateRegionalForecastDataViewSet(ViewSet):
     def create(self, request):

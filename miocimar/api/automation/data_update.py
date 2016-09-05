@@ -35,12 +35,13 @@ LOCAL_FORECAST_TYPE = r"pronostico_oleaje_y_viento"
 def getNodeData(node_id):
     #conseguir los datos del nodo
     node_dir= API_DIR + r"api/node/" + str(node_id) +".json"
-    print(node_dir)
     node = requests.get(node_dir)
-    node_list = json.loads(node.text)
-    print("All nodes:")
-    print(node_list)
-    return node_list
+    if node.status_code == 200:
+        print(node.text)
+        node_list = json.loads(node.text)
+        return node_list
+    else:
+        return None
     #ya se logran descargar los datos del pronostico correctamente resta lograr darle forma y salvarlos en el base de datos
     #desmenusar los datos en los parametros que necesitamos par el modelo
 
@@ -52,8 +53,6 @@ def getParam(path, data):
             data = data[i]
             if type(data) is list:
                 data = data[0]
-                print(data)
-            print(data)
         else:
             return None
     return data
@@ -65,11 +64,13 @@ def getNodeTaxonomyID(data):
         tax_id = getParam(paths['local_forecast_taxonomy_id'],data  )
     return tax_id
 
-
+#TODO add another types of messages to return for the following cases:
+#the csv where not found, the csvs couldnt be decoded, the node wasn't found
 def localForecastUpdate(node_id):
     #The API does a request to the drupal webpage to get node content.
     node_data = getNodeData(node_id)
-
+    if node_data is None:
+        return False
     #Gets the tax_id to see what kind of content is.
     tax_id = getNodeTaxonomyID(node_data)
     model_data_dict = dict()
@@ -88,22 +89,19 @@ def localForecastUpdate(node_id):
         csv_data_json = None
         with tempfile.TemporaryFile() as csv_file:
             if file_utilities.downloadFile(file_url,csv_file):
-                print("csv downaloaded")
                 csv_data_json = csv_processor.processData(csv_file,model_data_dict['local_forecast_taxonomy_id'])
-        if csv_data_json is not None:
-            save_local_forecast_entries(csv_data_json)
+                if csv_data_json is not None:
+                    saveLocalForecastEntries(csv_data_json)
     if model_data_dict['text'] is not None:
-        data_json = csv_processor.processData(csv_file,tax_id)
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
-    print(model_data_dict)
-
+    return True
 def regionalForecastUpdate():
     pass
 
 def warningUpdate():
     pass
 
-def save_local_forecast_entries(data_json):
+def saveLocalForecastEntries(data_json):
     serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
     if serialized_list.is_valid():
 
@@ -126,7 +124,7 @@ def save_local_forecast_entries(data_json):
                     update_entry.save()
                 else:
                     # TODO: Update this to a logging statement later
-                    print "Couldn't serialize and update this entry: " + str(serialized_object)
+                    print("Couldn't serialize and update this entry: ", str(serialized_object))
             else:
 
                 # There was no previous object
@@ -135,9 +133,12 @@ def save_local_forecast_entries(data_json):
                     new_entry.save()
                 else:
                     # TODO: Update this to a logging statement later
-                    print "Couldn't serialize and create this entry: " + str(serialized_object)
+                    print ("Couldn't serialize and create this entry: " , str(serialized_object))
 
 def updateLocalForecastText(new_text,forecast_id):
-    localForecast = LocalForecast.objects.filter(pk=forecast_id)
-    localForecast.comment = new_text
-    localForecast.save()
+    localForecast = LocalForecast.objects.get(pk=forecast_id)
+    if localForecast is not None:
+        localForecast.comment = new_text
+        localForecast.save()
+    else:
+        print("No entry avaiable")
