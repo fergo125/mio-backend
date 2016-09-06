@@ -1,50 +1,49 @@
 import csv
 import json
 import math
-import http
 import datetime
 import requests
 import sys
 import os
 #Time,sig_wav_ht_surface,max_wav_ht_surface,peak_wav_dir_surface,peak_wav_per_surface,u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
 
-def main():
-	# gatherer = FileGatherer()
-	processor = CSVProcessor()
-	APIDIR="http://localhost:8000/api/local_forecast_entry/"
-
-	# filesToDownload = gatherer.fileList()
-	# filenames =gatherer.fileToArray(filesToDownload)
-	# API_ROOT=""
-	# filenames = gatherer.fileToArray('allentries.json')
-	# if gatherer.fileDownloader(filenames):
-	# 	print("Archios descargados satisfactoriamente")
-	# else:
-	# 	print("no se pudo descargar los archivos")
-	for fn in os.listdir("csvs/"):
-		filedir = "csvs/"+fn
-		if os.path.isfile(filedir):
-			data=''
-
-			if fn[0:2] == "ca":
-				data = processor.processData(filedir,7)
-			if fn[0:2] == "cp":
-				data = processor.processData(filedir,2)
-			if fn[0:2] == "ic":
-				data = processor.processData(filedir,8)
-			if fn[0:2] == "np":
-				data = processor.processData(filedir,1)
-			if fn[0:2] == "pc":
-				data = processor.processData(filedir,5)
-			if fn[0:2] == "pu":
-				data = processor.processData(filedir,4)
-			if fn[0:2] == "sp":
-				data = processor.processData(filedir,3)
-			if fn[0:2] == "ps":
-				data = processor.processData(filedir,6)
-			print(data)
-			processor.publishData(APIDIR,data)
-
+# def main():
+# 	# gatherer = FileGatherer()
+# 	processor = CSVProcessor()
+# 	APIDIR="http://localhost:8000/api/local_forecast_entry/"
+#
+# 	# filesToDownload = gatherer.fileList()
+# 	# filenames =gatherer.fileToArray(filesToDownload)
+# 	# API_ROOT=""
+# 	# filenames = gatherer.fileToArray('allentries.json')
+# 	# if gatherer.fileDownloader(filenames):
+# 	# 	print("Archios descargados satisfactoriamente")
+# 	# else:
+# 	# 	print("no se pudo descargar los archivos")
+# 	for fn in os.listdir("csvs/"):
+# 		filedir = "csvs/"+fn
+# 		if os.path.isfile(filedir):
+# 			data=''
+#
+# 			if fn[0:2] == "ca":
+# 				data = processor.processData(filedir,7)
+# 			if fn[0:2] == "cp":
+# 				data = processor.processData(filedir,2)
+# 			if fn[0:2] == "ic":
+# 				data = processor.processData(filedir,8)
+# 			if fn[0:2] == "np":
+# 				data = processor.processData(filedir,1)
+# 			if fn[0:2] == "pc":
+# 				data = processor.processData(filedir,5)
+# 			if fn[0:2] == "pu":
+# 				data = processor.processData(filedir,4)
+# 			if fn[0:2] == "sp":
+# 				data = processor.processData(filedir,3)
+# 			if fn[0:2] == "ps":
+# 				data = processor.processData(filedir,6)
+# 			print(data)
+# 			processor.publishData(APIDIR,data)
+#
 
 	# date
     # wave_height_sig
@@ -55,7 +54,7 @@ def main():
     # wind_speed= sqrt(pow(u,2) + pow(u,2))
     # wind_burst= wind_speed*1.3
 
-class FileGatherer:
+class FileUtilities:
 	def fileList(self):
 		pageNumber = 0
 		listResult = 'empty array'
@@ -119,27 +118,42 @@ class FileGatherer:
 			return newArray
 
 class CSVProcessor:
-	def processData(self,filename,forecastID):
-		with  open(filename) as fileCSV:
-			fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
-			data= list()
-			readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
-			for rue in readerCSV:
-				data.append(rue)
-				#print(rue)
-			if data:
-				del data[0]
-				newData = self.makeWindData(data,forecastID)
-				jsondata=json.dumps(newData)
-				return jsondata
+	"""
+	Recibe el nombre del archivo en que se descargo el csv y ID del pronostico del cual se van a sacar los datos
+	de los archivos, el script tiene los campos de los datos en los cuales
+	"""
+	def processData(self,fileCSV,forecastID):
+		fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
+		data= list()
+		readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
+		for rue in readerCSV:
+			print(rue)
+			data.append(rue)
+		if data:
+			del data[0]
+			newData = self.makeWindData(data,forecastID)
+			jsondata=json.dumps(newData)
+			return jsondata
+		else:
+			return None
 
 	def makeWindData(self,dataList,forecastID):
 		newDataList = list()
+		u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
+		v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
+		wind_speed = float(rue['wind_speed'])
 		for rue in dataList:
 			rue['date'] = self.newDateFormat(rue['date'])
-			rue['wind_speed'] = self.windSpeedFromTwoComponents(float(rue['u-component_of_wind_height_above_ground']),float(rue['v-component_of_wind_height_above_ground']))
-			rue['wind_direction'] = self.windDirectionFromTwoComponents(float(rue['u-component_of_wind_height_above_ground']),float(rue['v-component_of_wind_height_above_ground']))
-			rue['wind_burst'] =float(rue['wind_speed'])*1.3
+			if u_wind_component is not None and v_wind_component is not None:
+				rue['wind_speed'] = self.windSpeedFromTwoComponents(u_wind_component,v_wind_component)
+				rue['wind_direction'] = self.windDirectionFromTwoComponents(u_wind_component,v_wind_component)
+			else:
+				rue['wind_speed'] = None
+				rue['wind_direction'] = None
+			if wind_speed is not None:
+				rue['wind_burst'] =wind_speed*1.3
+			else:
+				rue['wind_burst'] =None
 			rue['local_forecast'] = forecastID
 			del rue['u-component_of_wind_height_above_ground']
 			del rue['v-component_of_wind_height_above_ground']
@@ -164,6 +178,6 @@ class CSVProcessor:
 		except:
 			newdate=date
 		return newDate
-
-if __name__== "__main__":
-	main()
+# 
+# if __name__== "__main__":
+# 	main()

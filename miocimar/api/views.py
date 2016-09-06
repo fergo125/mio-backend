@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render
 from api.models import *
 from api.serializers import *
@@ -10,6 +12,10 @@ from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+import automation.data_update as data_updater
+import json
+
+logger = logging.getLogger("mioLogger")
 
 class TideRegionViewSet(ModelViewSet):
     """Tide regions view set, which also includes a weekly view for
@@ -65,6 +71,7 @@ class LocalForecastsViewSet(ModelViewSet):
         serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
         return Response(serializer.data)
 
+
 class LocalForecastEntryViewSet(ModelViewSet):
     queryset = LocalForecastEntry.objects.all()
     serializer_class = LocalForecastEntrySerializer
@@ -112,6 +119,42 @@ class LocalForecastEntryViewSet(ModelViewSet):
             return Response({"result": "success", "message": "Successfully saved"})
         else:
             return Response({"result": "error", "message": "Invalid serializer data"})
+
+# Drupal connection endpoints
+class UpdateLocalForecastDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Local Forecast update, node id: {0}".format(node_id))
+        status_return = status.HTTP_200_OK
+        if data_updater.localForecastUpdate(node_id):
+            content = {'Updated':node_id}
+        else:
+            content = {'Update':node_id,'Message':'node_id not found'}
+            status_return = status.HTTP_404_NOT_FOUND
+        return Response(content, status=status_return)
+
+class UpdateRegionalForecastDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
+
+class UpdateWarningDataViewSet(ViewSet):
+    def create(self, request):
+        if "node_id" not in request.data:
+            logger.error("node_id not found in request")
+
+        node_id = request.data["node_id"]
+        logger.debug("Warning update, node id: {0}".format(node_id))
+        content = {'working': 'OK', "node_id": node_id}
+        return Response(content, status=status.HTTP_200_OK)
 
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
