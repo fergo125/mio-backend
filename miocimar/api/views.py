@@ -130,7 +130,7 @@ class UpdateLocalForecastDataViewSet(ViewSet):
         logger.debug("Local Forecast update, node id: {0}".format(node_id))
         status_return = status.HTTP_200_OK
         if data_updater.localForecastUpdate(node_id):
-            content = {'Updated':node_id}
+            content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
         else:
             content = {'Update':node_id,'Message':'node_id not found'}
             status_return = status.HTTP_404_NOT_FOUND
@@ -142,6 +142,11 @@ class UpdateRegionalForecastDataViewSet(ViewSet):
             logger.error("node_id not found in request")
 
         node_id = request.data["node_id"]
+        if data_updater.regionalForecastUpdate(node_id):
+            content = {'Updated':node_id,"Element-type":"Regional Forecast"}
+        else:
+            content = {'Update':node_id,'Message':'node_id not found'}
+            status_return = status.HTTP_404_NOT_FOUND
         logger.debug("Regional Forecast update, node id: {0}".format(node_id))
         content = {'working': 'OK', "node_id": node_id}
         return Response(content, status=status.HTTP_200_OK)
