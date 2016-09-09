@@ -29,6 +29,7 @@ regions = [{
 
 if TideRegion.objects.count() != 0:
 	TideRegion.objects.all().delete()
+	TideEntry.objects.all().delete()
 
 for region_data in regions:
 	region = TideRegion(name=region_data["name"])
