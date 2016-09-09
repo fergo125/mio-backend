@@ -59,10 +59,11 @@ class TideRegion(models.Model):
 
 class TideEntry(models.Model):
     id = models.AutoField(primary_key=True)
-    tide_region = models.ForeignKey(TideRegion, on_delete =models.CASCADE)
+    tide_region = models.ForeignKey(TideRegion, on_delete=models.CASCADE)
     date = models.DateTimeField()
     tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
+    moon = models.IntegerField()
 
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
