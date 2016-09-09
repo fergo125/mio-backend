@@ -62,8 +62,10 @@ class LocalForecastsViewSet(ModelViewSet):
         """
         local_forecast_region = self.get_object()
         pk = local_forecast_region.pk
-        start_date = datetime.date.today() - datetime.timedelta(days=1)
-        end_date = datetime.date.today() + datetime.timedelta(days=7)
+        start_date = datetime.date.today().replace(hour=0, minute=0) \
+            - datetime.timedelta(days=1)
+        end_date = datetime.date.today().replace(hour=0, minute=0) \
+            + datetime.timedelta(days=7)
         local_forecast_entries = LocalForecastEntry.objects \
             .filter(date__gt=start_date) \
             .filter(date__lt=end_date) \
