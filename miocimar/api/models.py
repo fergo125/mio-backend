@@ -69,10 +69,6 @@ class RegionalForecast(models.Model):
     name = models.CharField(max_length=50)
     # If available
     english_name = models.CharField(max_length=50)
-    # Type icon
-    small_icon_url = models.CharField(max_length=200)
-    medium_icon_url = models.CharField(max_length=200)
-    large_icon_url = models.CharField(max_length=200)
 
     # These values are updated for each new Drupal node
     date = models.DateField()
