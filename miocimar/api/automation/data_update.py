@@ -10,7 +10,7 @@ import tempfile
 #sys.path.append(os.path.join('..','..'))
 from csv_utilities import FileUtilities
 from csv_utilities import CSVProcessor
-from api.models import LocalForecast
+from api.models import LocalForecast,RegionalForecast,WaveWarning
 
 
 paths={'text':['body','und','value'],
@@ -20,11 +20,14 @@ paths={'text':['body','und','value'],
 'element_type':['type'],
 'local_forecast_taxonomy_id':['field_taxonomia_oleaje_viento','und','tid'],
 'regional_forecast_taxonomy_id':['field_taxonomia_regional','und','tid'],
+'title':['title'],
+'level':['field_tipo_de_alerta','und','value']
 }
 
+
 data_path_local={'text','csv_file','date','element_type','local_forecast_taxonomy_id'}
-data_path_regional={'text','date','element_type'}
-data_path_warning={}
+data_path_regional={'text','date','gif_file','regional_forecast_taxonomy_id'}
+data_path_warning={'text','level','date','title'}
 
 localArrayProcess={}
 
@@ -37,7 +40,6 @@ def getNodeData(node_id):
     node_dir= API_DIR + r"api/node/" + str(node_id) +".json"
     node = requests.get(node_dir)
     if node.status_code == 200:
-        print(node.text)
         node_list = json.loads(node.text)
         return node_list
     else:
@@ -48,7 +50,6 @@ def getNodeData(node_id):
     #Revisar el modelo de datos que hay en el e
 def getParam(path, data):
     for i in path:
-        print("Data navigation with i="+i+":")
         if i in data:
             data = data[i]
             if type(data) is list:
@@ -95,11 +96,7 @@ def localForecastUpdate(node_id):
     if model_data_dict['text'] is not None:
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
     return True
-def regionalForecastUpdate():
-    pass
 
-def warningUpdate():
-    pass
 
 def saveLocalForecastEntries(data_json):
     serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
@@ -142,3 +139,53 @@ def updateLocalForecastText(new_text,forecast_id):
         localForecast.save()
     else:
         print("No entry avaiable")
+
+def regionalForecastUpdate(node_id):
+    node_data = getNodeData(node_id)
+    if node_data is None:
+        return False
+        #Gets the tax_id to see what kind of content is.
+    model_data_dict = dict()
+    #Using the path vector declared above, the attributes of interest
+    #are collected from json data downloaded from the content publication.
+    #Each kind of content has the data paths necessary according to its model.
+    for i in data_path_regional:
+        model_data_dict[i]=getParam(paths[i],node_data)
+    latest_forecast = RegionalForecast.objects.get(id=model_data_dict['regional_forecast_taxonomy_id'])
+    if latest_forecast is not None:
+        latest_forecast.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+        latest_forecast.text = model_data_dict["text"]
+        latest_forecast.animation_url = API_DIR + "sites/default/files/gifs/" + model_data_dict["gif_file"]
+        latest_forecast.save()
+    else:
+        return False
+    return True
+
+def warningUpdate(node_id):
+    node_data = getNodeData(node_id)
+    if node_data is None:
+        return False
+        #Gets the tax_id to see what kind of content is.
+    model_data_dict = dict()
+    #Using the path vector declared above, the attributes of interest
+    #are collected from json data downloaded from the content publication.
+    #Each kind of content has the data paths necessary according to its model.
+    for i in data_path_warning:
+        model_data_dict[i]=getParam(paths[i],node_data)
+    try:
+        warning = WaveWarning.objects.get(pk=int(node_id))
+    except:
+        warning = WaveWarning(pk=int(node_id))
+    warning.level = getWarningType(model_data_dict["level"])
+    warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+    warning.text = model_data_dict["text"]
+    warning.title = model_data_dict["title"]
+    warning.save()
+
+    return True
+
+def getWarningType(warning_type):
+    if warning_type == "amarilla":
+        return 1
+    if warning_type == "roja":
+        return 2

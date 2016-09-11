@@ -1,0 +1,32 @@
+[
+  {
+    "model": "api.RegionalForecast",
+    "pk": 11,
+    "fields": {
+      "name": "Corrientes Marinas",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/corrientes_regional.gif"
+    }
+  },
+  {
+    "model": "api.RegionalForecast",
+    "pk": 12,
+    "fields": {
+      "name": "Temperatura Superficial del Mar",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/temperatura_regional.gif"
+    }
+  },
+  {
+    "model": "api.RegionalForecast",
+    "pk": 10,
+    "fields": {
+      "name": "Oleaje",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/oleaje_regional.gif"
+    }
+  }
+]
