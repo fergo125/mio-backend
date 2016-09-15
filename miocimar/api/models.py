@@ -72,9 +72,10 @@ class RegionalForecast(models.Model):
     english_name = models.CharField(max_length=50)
 
     # These values are updated for each new Drupal node
-    date = models.DateField()
+    date = models.DateTimeField()
     text = models.TextField()
     animation_url = models.CharField(max_length=200)
+    scale_bar_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
