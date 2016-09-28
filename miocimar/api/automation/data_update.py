@@ -153,7 +153,10 @@ def regionalForecastUpdate(node_id):
         model_data_dict[i]=getParam(paths[i],node_data)
     latest_forecast = RegionalForecast.objects.get(id=model_data_dict['regional_forecast_taxonomy_id'])
     if latest_forecast is not None:
-        latest_forecast.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+        string_datetime =  datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+        string_datetime += "Z"
+        #latest_forecast.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+        latest_forecast.date = string_datetime
         latest_forecast.text = model_data_dict["text"]
         latest_forecast.animation_url = API_DIR + "sites/default/files/gifs/" + model_data_dict["gif_file"]
         latest_forecast.save()
@@ -177,7 +180,7 @@ def warningUpdate(node_id):
     except:
         warning = WaveWarning(pk=int(node_id))
     warning.level = getWarningType(model_data_dict["level"])
-    warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d')
+    warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')+"Z"
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
     warning.save()
