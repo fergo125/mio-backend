@@ -183,7 +183,7 @@ class UpdateWarningDataViewSet(ViewSet):
         else:
             node_id = request.data["node_id"]
             logger.debug("Local Forecast update, node id: {0}".format(node_id))
-            thread.start_new_thread(data_updater.data_updater.warningUpdate,(node_id,))
+            thread.start_new_thread(data_updater.warningUpdate,(node_id,))
             content = {'Updated':node_id,'Element-type':"Warning entry"}
         return Response(content, status=status_return)
 
