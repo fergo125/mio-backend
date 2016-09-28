@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import automation.data_update as data_updater
 import json
+import time
 
 logger = logging.getLogger("mioLogger")
 
@@ -124,6 +125,7 @@ class LocalForecastEntryViewSet(ModelViewSet):
 class UpdateLocalForecastDataViewSet(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
@@ -141,6 +143,7 @@ class UpdateLocalForecastDataViewSet(ViewSet):
 class UpdateRegionalForecastDataViewSet(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
@@ -159,6 +162,7 @@ class UpdateRegionalForecastDataViewSet(ViewSet):
 class UpdateWarningDataViewSet(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
