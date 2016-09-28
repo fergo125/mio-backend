@@ -155,11 +155,6 @@ class UpdateLocalForecastDataViewSet(ViewSet):
         else:
             node_id = request.data["node_id"]
             logger.debug("Local Forecast update, node id: {0}".format(node_id))
-            # if data_updater.localForecastUpdate(node_id):
-            #     content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
-            # else:
-            #     content = {'Update':node_id,'Message':'node_id data not found'}
-            #     status_return = status.HTTP_404_NOT_FOUND
             thread.start_new_thread(data_updater.localForecastUpdate,(node_id,))
             content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
         return Response(content, status=status_return)
@@ -167,7 +162,6 @@ class UpdateLocalForecastDataViewSet(ViewSet):
 class UpdateRegionalForecastDataViewSet(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
-        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
@@ -175,31 +169,22 @@ class UpdateRegionalForecastDataViewSet(ViewSet):
         else:
             node_id = request.data["node_id"]
             logger.debug("Regional Forecast update, node id: {0}".format(node_id))
-            if data_updater.regionalForecastUpdate(node_id):
-                content = {'Updated':node_id,"Element-type":"Regional Forecast"}
-            else:
-                content = {'Update':node_id,'Message':'node_id not found'}
-                status_return = status.HTTP_404_NOT_FOUND
-            logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+            thread.start_new_thread(data_updater.regionalForecastUpdate,(node_id,))
+            content = {'Updated':node_id,'Element-type':"Regional Forecast"}
         return Response(content, status=status_return)
 
 class UpdateWarningDataViewSet(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
-        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
             content = {'Message':'node_id not found in request'}
         else:
             node_id = request.data["node_id"]
-            logger.debug("Wave Warning update, node id: {0}".format(node_id))
-            if data_updater.warningUpdate(node_id):
-                content = {'Updated':node_id,"Element-type":"WaveWarning"}
-            else:
-                content = {'Update':node_id,'Message':'Incorrect element data'}
-                status_return = status.HTTP_404_NOT_FOUND
-
+            logger.debug("Local Forecast update, node id: {0}".format(node_id))
+            thread.start_new_thread(data_updater.data_updater.warningUpdate,(node_id,))
+            content = {'Updated':node_id,'Element-type':"Warning entry"}
         return Response(content, status=status_return)
 
 class RegionalForecastViewSet(ModelViewSet):
