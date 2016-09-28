@@ -15,6 +15,7 @@ import datetime
 import automation.data_update as data_updater
 import json
 import time
+import dateutil.parser
 
 logger = logging.getLogger("mioLogger")
 
@@ -31,13 +32,34 @@ class TideRegionViewSet(ModelViewSet):
         week
         """
         tide_region = self.get_object()
-        pk = tide_region.pk
         start_date = datetime.date.today() - datetime.timedelta(days=1)
         end_date = datetime.date.today() + datetime.timedelta(days=7)
+
         tides = TideEntry.objects \
             .filter(date__gt=start_date) \
             .filter(date__lt=end_date) \
-            .filter(tide_region=pk)
+            .filter(tide_region=tide_region.pk)
+
+        serializer = TideEntrySerializer(tides, context={'request': request}, many=True)
+        return Response(serializer.data)
+
+    @detail_route(methods=['get'])
+    def search_date(self, request, **kwargs):
+        tide_region = self.get_object()
+        start_date = dateutil.parser.parse(request.query_params.get('start'))
+        end_date = dateutil.parser.parse(request.query_params.get('end'))
+
+        # Strip time from datetimes
+        start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
+        end_date = end_date.replace(hour=0, minute=0, second=0, microsecond=0)
+
+        # Make end_date inclusive
+        end_date = end_date + datetime.timedelta(days=1)
+        tides = TideEntry.objects \
+            .filter(date__gt=start_date) \
+            .filter(date__lt=end_date) \
+            .filter(tide_region=tide_region.pk)
+
         serializer = TideEntrySerializer(tides, context={'request': request}, many=True)
         return Response(serializer.data)
 
@@ -71,7 +93,6 @@ class LocalForecastsViewSet(ModelViewSet):
             .filter(local_forecast=pk)
         serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
         return Response(serializer.data)
-
 
 class LocalForecastEntryViewSet(ModelViewSet):
     queryset = LocalForecastEntry.objects.all()

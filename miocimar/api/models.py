@@ -59,25 +59,23 @@ class TideRegion(models.Model):
 
 class TideEntry(models.Model):
     id = models.AutoField(primary_key=True)
-    tide_region = models.ForeignKey(TideRegion, on_delete =models.CASCADE)
+    tide_region = models.ForeignKey(TideRegion, on_delete=models.CASCADE)
     date = models.DateTimeField()
     tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
+    moon = models.IntegerField()
 
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     # If available
     english_name = models.CharField(max_length=50)
-    # Type icon
-    small_icon_url = models.CharField(max_length=200)
-    medium_icon_url = models.CharField(max_length=200)
-    large_icon_url = models.CharField(max_length=200)
 
     # These values are updated for each new Drupal node
-    date = models.DateField()
+    date = models.DateTimeField()
     text = models.TextField()
     animation_url = models.CharField(max_length=200)
+    scale_bar_url = models.CharField(max_length=200)
 
     def __unicode__(self):
         return self.name
