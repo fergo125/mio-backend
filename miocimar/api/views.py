@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import automation.data_update as data_updater
 import json
+import time
 
 logger = logging.getLogger("mioLogger")
 
@@ -123,38 +124,59 @@ class LocalForecastEntryViewSet(ModelViewSet):
 # Drupal connection endpoints
 class UpdateLocalForecastDataViewSet(ViewSet):
     def create(self, request):
+        status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
-
-        node_id = request.data["node_id"]
-        logger.debug("Local Forecast update, node id: {0}".format(node_id))
-        status_return = status.HTTP_200_OK
-        if data_updater.localForecastUpdate(node_id):
-            content = {'Updated':node_id}
-        else:
-            content = {'Update':node_id,'Message':'node_id not found'}
             status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            node_id = request.data["node_id"]
+            logger.debug("Local Forecast update, node id: {0}".format(node_id))
+            if data_updater.localForecastUpdate(node_id):
+                content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
+            else:
+                content = {'Update':node_id,'Message':'node_id data not found'}
+                status_return = status.HTTP_404_NOT_FOUND
         return Response(content, status=status_return)
 
 class UpdateRegionalForecastDataViewSet(ViewSet):
     def create(self, request):
+        status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
-
-        node_id = request.data["node_id"]
-        logger.debug("Regional Forecast update, node id: {0}".format(node_id))
-        content = {'working': 'OK', "node_id": node_id}
-        return Response(content, status=status.HTTP_200_OK)
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            node_id = request.data["node_id"]
+            logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+            if data_updater.regionalForecastUpdate(node_id):
+                content = {'Updated':node_id,"Element-type":"Regional Forecast"}
+            else:
+                content = {'Update':node_id,'Message':'node_id not found'}
+                status_return = status.HTTP_404_NOT_FOUND
+            logger.debug("Regional Forecast update, node id: {0}".format(node_id))
+        return Response(content, status=status_return)
 
 class UpdateWarningDataViewSet(ViewSet):
     def create(self, request):
+        status_return = status.HTTP_200_OK
+        time.sleep(5)
         if "node_id" not in request.data:
             logger.error("node_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            node_id = request.data["node_id"]
+            logger.debug("Wave Warning update, node id: {0}".format(node_id))
+            if data_updater.warningUpdate(node_id):
+                content = {'Updated':node_id,"Element-type":"WaveWarning"}
+            else:
+                content = {'Update':node_id,'Message':'Incorrect element data'}
+                status_return = status.HTTP_404_NOT_FOUND
 
-        node_id = request.data["node_id"]
-        logger.debug("Warning update, node id: {0}".format(node_id))
-        content = {'working': 'OK', "node_id": node_id}
-        return Response(content, status=status.HTTP_200_OK)
+        return Response(content, status=status_return)
 
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()

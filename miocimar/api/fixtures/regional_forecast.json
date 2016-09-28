@@ -1,0 +1,42 @@
+[
+  {
+    "model": "api.RegionalForecast",
+    "pk": 11,
+    "fields": {
+      "name": "Corrientes Marinas",
+      "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/corrientes_regional.gif"
+    }
+  },
+  {
+    "model": "api.RegionalForecast",
+    "pk": 12,
+    "fields": {
+      "name": "Temperatura Superficial del Mar",
+      "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/temperatura_regional.gif"
+    }
+  },
+  {
+    "model": "api.RegionalForecast",
+    "pk": 10,
+    "fields": {
+      "name": "Oleaje",
+      "small_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "medium_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "large_icon_url": "http://res.cloudinary.com/dh0xtya60/image/upload/v1466891009/mapa_mini_pacifico_norte_norte_3x_q36e8j.png",
+      "date":"2016-01-01",
+      "text":"Texto pronostico",
+      "animation_url":"http://miocimar-test.ucr.ac.cr/sites/default/files/gifs/oleaje_regional.gif"
+    }
+  }
+
+  ]
