@@ -16,6 +16,7 @@ import automation.data_update as data_updater
 import json
 import time
 import dateutil.parser
+import thread
 
 logger = logging.getLogger("mioLogger")
 
@@ -154,11 +155,13 @@ class UpdateLocalForecastDataViewSet(ViewSet):
         else:
             node_id = request.data["node_id"]
             logger.debug("Local Forecast update, node id: {0}".format(node_id))
-            if data_updater.localForecastUpdate(node_id):
-                content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
-            else:
-                content = {'Update':node_id,'Message':'node_id data not found'}
-                status_return = status.HTTP_404_NOT_FOUND
+            # if data_updater.localForecastUpdate(node_id):
+            #     content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
+            # else:
+            #     content = {'Update':node_id,'Message':'node_id data not found'}
+            #     status_return = status.HTTP_404_NOT_FOUND
+            thread.start_new_thread(data_updater.localForecastUpdate,(node_id,))
+            content = {'Updated':node_id,'Element-type':"Local Forecast entry"}
         return Response(content, status=status_return)
 
 class UpdateRegionalForecastDataViewSet(ViewSet):
