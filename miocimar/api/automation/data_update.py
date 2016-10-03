@@ -33,7 +33,9 @@ localArrayProcess={}
 
 API_DIR= r"http://miocimar-test.ucr.ac.cr/"
 LOCAL_FORECAST_TYPE = r"pronostico_oleaje_y_viento"
+FIREBASE_URL="https://fcm.googleapis.com/fcm/send"
 
+FIREBASE_KEY = "AIzaSyB34V3DG892dzg9gXnneVz8-i1bvuQUuBk"
 #testid = 1397
 def getNodeData(node_id):
     #conseguir los datos del nodo
@@ -184,7 +186,7 @@ def warningUpdate(node_id):
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
     warning.save()
-
+    sendNewNotification(node_id)
     return True
 
 def getWarningType(warning_type):
@@ -192,3 +194,11 @@ def getWarningType(warning_type):
         return 1
     if warning_type == "roja":
         return 2
+
+def sendNewNotification(notification_id):
+    notification_object = WaveWarning.objects.get(id=int(notification_id))
+    access_key = 'key='+FIREBASE_KEY
+    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+notification_object.subtitle+'","notificationId": "'+str(notification_id)+'","subtitle": "'+notification_object.subtitle+'"}}'
+    request_headers = {'Content/type':'application/json','Authorization':access_key}
+    request_body_encoded = request_body.encode('utf-8')
+    response = requests.post(FIREBASE_URL,data=request_body_encoded,headers=request_headers)

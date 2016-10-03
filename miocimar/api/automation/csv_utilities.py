@@ -93,8 +93,8 @@ class FileUtilities:
 					dl += len(data)
 					f.write(data)
 					done = int(50 * dl / total_length)
-					sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
-					sys.stdout.flush()
+					#sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
+					#sys.stdout.flush()
 			return True
 		else:
 			return False
@@ -178,6 +178,6 @@ class CSVProcessor:
 		except:
 			newdate=date
 		return newDate
-# 
+#
 # if __name__== "__main__":
 # 	main()
