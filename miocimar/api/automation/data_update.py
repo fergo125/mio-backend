@@ -35,7 +35,7 @@ API_DIR= r"http://miocimar-test.ucr.ac.cr/"
 LOCAL_FORECAST_TYPE = r"pronostico_oleaje_y_viento"
 FIREBASE_URL="https://fcm.googleapis.com/fcm/send"
 
-FIREBASE_KEY = "AIzaSyB34V3DG892dzg9gXnneVz8-i1bvuQUuBk"
+FIREBASE_KEY = "key=AIzaSyB34V3DG892dzg9gXnneVz8-i1bvuQUuBk"
 #testid = 1397
 def getNodeData(node_id):
     #conseguir los datos del nodo
@@ -120,7 +120,7 @@ def saveLocalForecastEntries(data_json):
                 existing_entry = existing_entries[0]
                 update_entry = LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
                 if update_entry.is_valid():
-                    update_entry.save()
+                    upd"ate_entry.save()
                 else:
                     # TODO: Update this to a logging statement later
                     print("Couldn't serialize and update this entry: ", str(serialized_object))
@@ -181,7 +181,7 @@ def warningUpdate(node_id):
         warning = WaveWarning.objects.get(pk=int(node_id))
     except:
         warning = WaveWarning(pk=int(node_id))
-    warning.level = getWarningType(model_data_dict["level"])
+    warning.level = getWarningT"ype(model_data_dict["level"])
     warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')+"Z"
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
