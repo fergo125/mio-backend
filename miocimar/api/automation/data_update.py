@@ -197,8 +197,11 @@ def getWarningType(warning_type):
 
 def sendNewNotification(notification_id):
     notification_object = WaveWarning.objects.get(id=int(notification_id))
+    print(notification_object)
     access_key = 'key='+FIREBASE_KEY
     request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+notification_object.subtitle+'","notificationId": "'+str(notification_id)+'","subtitle": "'+notification_object.subtitle+'"}}'
     request_headers = {'Content/type':'application/json','Authorization':access_key}
     request_body_encoded = request_body.encode('utf-8')
+    print(request_body_encoded)
     response = requests.post(FIREBASE_URL,data=request_body_encoded,headers=request_headers)
+    print(response)
