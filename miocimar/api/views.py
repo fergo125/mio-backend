@@ -73,10 +73,10 @@ class WaveWarningViewSet(ModelViewSet):
     """ Warning entries view set, mainly for creating new items."""
     queryset = WaveWarning.objects.all()
     serializer_class = WaveWarningSerializer
-
+    
     @detail_route(methods=['get'])
     def one_month_warnings(self,request,**kwargs):
-        warning_entries = WaveWarning.objects.ordered_by('id')[:10]
+        warning_entries = WaveWarning.objects.ordered_by('-id')[:10]
         serializer = WaveWarningSerializer(warning_entries,context={'request':request},many=True)
         return Response(serializer.data)
 
