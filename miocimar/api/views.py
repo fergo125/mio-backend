@@ -74,6 +74,13 @@ class WaveWarningViewSet(ModelViewSet):
     queryset = WaveWarning.objects.all()
     serializer_class = WaveWarningSerializer
 
+    @detail_route(methods=['get'])
+    def one_month_warnings(self,request,**kwargs):
+        start_date = datetime.date.today() - datetime.timedelta(days=31)
+        warning_entries = WaveWarning.objects.filter(date__gt=start_date)
+        serializer = WaveWarningSerializer(warning_entries,context={'request':request},many=True)
+        return Response(serializer.data)
+
 class LocalForecastsViewSet(ModelViewSet):
     """ Local forecasts view set """
     queryset = LocalForecast.objects.all()
