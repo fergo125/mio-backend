@@ -76,8 +76,7 @@ class WaveWarningViewSet(ModelViewSet):
 
     @detail_route(methods=['get'])
     def one_month_warnings(self,request,**kwargs):
-        start_date = datetime.date.today() - datetime.timedelta(days=31)
-        warning_entries = WaveWarning.objects.filter(date__gt=start_date)
+        warning_entries = WaveWarning.objects.ordered_by('id')[:10]
         serializer = WaveWarningSerializer(warning_entries,context={'request':request},many=True)
         return Response(serializer.data)
 
