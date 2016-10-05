@@ -151,7 +151,22 @@ def regionalForecastUpdate(node_id):
     #Using the path vector declared above, the attributes of interest
     #are collected from json data downloaded from the content publication.
     #Each kind of content has the data paths necessary according to its model.
-    for i in data_pathnotification_object.subtitleode_id):
+    for i in data_path_regional:
+        model_data_dict[i]=getParam(paths[i],node_data)
+    latest_forecast = RegionalForecast.objects.get(id=model_data_dict['regional_forecast_taxonomy_id'])
+    if latest_forecast is not None:
+        string_datetime =  datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+        string_datetime += "Z"
+        #latest_forecast.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+        latest_forecast.date = string_datetime
+        latest_forecast.text = model_data_dict["text"]
+        latest_forecast.animation_url = API_DIR + "sites/default/files/gifs/" + model_data_dict["gif_file"]
+        latest_forecast.save()
+    else:
+        return False
+    return True
+
+def warningUpdate(node_id):
     node_data = getNodeData(node_id)
     if node_data is None:
         return False
@@ -184,7 +199,7 @@ def sendNewNotification(notification_id):
     notification_object = WaveWarning.objects.get(id=int(notification_id))
     print(notification_object)
     access_key = 'key='+FIREBASE_KEY
-    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+"subtitulo por defecto"+'","notificationId": "'+str(notification_id)+'","notificationLevel": "'+str(notification_object.level)+'"}}'
+    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+"Subtitulo por defecto"+'","notificationId": "'+str(notification_id)+'","notificationLevel": "'+str(notification_object.level)+'"}}'
     request_headers = {'Content-Type':'application/json','Authorization':access_key}
     request_body_encoded = request_body.encode('utf-8')
     print(request_body_encoded)
