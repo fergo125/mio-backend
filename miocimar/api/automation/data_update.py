@@ -21,19 +21,22 @@ paths={'text':['body','und','value'],
 'local_forecast_taxonomy_id':['field_taxonomia_oleaje_viento','und','tid'],
 'regional_forecast_taxonomy_id':['field_taxonomia_regional','und','tid'],
 'title':['title'],
-'level':['field_tipo_de_alerta','und','value']
+'level':['field_tipo_de_alerta','und','value'],
+'subtitle':['field_subtitle','und','value']
 }
 
 
 data_path_local={'text','csv_file','date','element_type','local_forecast_taxonomy_id'}
 data_path_regional={'text','date','gif_file','regional_forecast_taxonomy_id'}
-data_path_warning={'text','level','date','title'}
+data_path_warning={'text','level','date','title','subtitle'}
 
 localArrayProcess={}
 
 API_DIR= r"http://miocimar-test.ucr.ac.cr/"
 LOCAL_FORECAST_TYPE = r"pronostico_oleaje_y_viento"
+FIREBASE_URL="https://fcm.googleapis.com/fcm/send"
 
+FIREBASE_KEY = "AIzaSyB34V3DG892dzg9gXnneVz8-i1bvuQUuBk"
 #testid = 1397
 def getNodeData(node_id):
     #conseguir los datos del nodo
@@ -183,12 +186,26 @@ def warningUpdate(node_id):
     warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')+"Z"
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
+    warning.subtitle=model_data_dict["subtitle"]
     warning.save()
-
+    sendNewNotification(node_id)
     return True
 
 def getWarningType(warning_type):
+    if warning_type == "verde":
+        return 0
     if warning_type == "amarilla":
         return 1
     if warning_type == "roja":
         return 2
+
+def sendNewNotification(notification_id):
+    notification_object = WaveWarning.objects.get(id=int(notification_id))
+    print(notification_object)
+    access_key = 'key='+FIREBASE_KEY
+    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+notification_object.subtitle+'","notificationId": "'+str(notification_id)+'","notificationLevel": "'+str(notification_object.level)+'"}}'
+    request_headers = {'Content-Type':'application/json','Authorization':access_key}
+    request_body_encoded = request_body.encode('utf-8')
+    print(request_body_encoded)
+    response = requests.post(FIREBASE_URL,data=request_body_encoded,headers=request_headers)
+    print(response)

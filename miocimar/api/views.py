@@ -71,7 +71,7 @@ class TideEntryViewSet(ModelViewSet):
 
 class WaveWarningViewSet(ModelViewSet):
     """ Warning entries view set, mainly for creating new items."""
-    queryset = WaveWarning.objects.all()
+    queryset = WaveWarning.objects.order_by('-date')
     serializer_class = WaveWarningSerializer
 
 class LocalForecastsViewSet(ModelViewSet):
