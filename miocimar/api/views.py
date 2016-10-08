@@ -16,6 +16,7 @@ import automation.data_update as data_updater
 import json
 import time
 import dateutil.parser
+import itertools
 import thread
 
 logger = logging.getLogger("mioLogger")
@@ -73,6 +74,15 @@ class WaveWarningViewSet(ModelViewSet):
     """ Warning entries view set, mainly for creating new items."""
     queryset = WaveWarning.objects.order_by('-date')
     serializer_class = WaveWarningSerializer
+
+    def list(self, request):
+        # Get the last 10 informative notifications (level = 0)
+        notifications = list(WaveWarning.objects.order_by('-date').filter(level = 0)[:10])
+        # Get the last 10 alert notifications (level > 0)
+        alerts = list(WaveWarning.objects.order_by('-date').filter(level__gt = 0)[:10])
+        joined_list = notifications + alerts
+        serializer = WaveWarningSerializer(joined_list, context={'request': request}, many=True)
+        return Response(serializer.data)
 
 class LocalForecastsViewSet(ModelViewSet):
     """ Local forecasts view set """
