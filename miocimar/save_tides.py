@@ -25,6 +25,12 @@ regions = [{
 }, {
 	"name": "Quepos",
 	"file": "quepos"
+}, {
+        "name": "Puntarenas",
+        "file": "puntarenas"
+}, {
+        "name": "Limón",
+        "file": "limon"
 }]
 
 if TideRegion.objects.count() != 0:
@@ -49,3 +55,4 @@ for region_data in regions:
 		TideEntry.objects.bulk_create(entry_list)
 
 print "Finished"
+
