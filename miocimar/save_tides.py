@@ -29,7 +29,7 @@ regions = [{
         "name": "Puntarenas",
         "file": "puntarenas"
 }, {
-        "name": "Limón",
+        "name": "Limon",
         "file": "limon"
 }]
 
