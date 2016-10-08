@@ -15,7 +15,7 @@ from api.models import LocalForecast,RegionalForecast,WaveWarning
 
 paths={'text':['body','und','value'],
 'csv_file':['field_csv','und','filename'],
-'gif_file':['field_gif','und','filename'],
+'gif_file':['field_imagen_movil','und','filename'],
 'date':['field_fecha','und','value'],
 'element_type':['type'],
 'local_forecast_taxonomy_id':['field_taxonomia_oleaje_viento','und','tid'],
