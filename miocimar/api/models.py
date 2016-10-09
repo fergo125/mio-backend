@@ -3,6 +3,7 @@ from django.db import models
 
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
+    taxonomy_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=50)
     # If available
     english_name = models.CharField(max_length=50)

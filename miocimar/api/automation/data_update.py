@@ -136,7 +136,7 @@ def saveLocalForecastEntries(data_json):
                     print ("Couldn't serialize and create this entry: " , str(serialized_object))
 
 def updateLocalForecastText(new_text,forecast_id):
-    localForecast = LocalForecast.objects.get(pk=forecast_id)
+    localForecast = LocalForecast.objects.get(taxonomy_id=forecast_id)
     if localForecast is not None:
         localForecast.comment = new_text
         localForecast.save()
