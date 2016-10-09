@@ -142,10 +142,11 @@ class CSVProcessor:
 
 	def makeWindData(self,dataList,forecastID):
 		newDataList = list()
-		u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
-		v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
-		wind_speed = float(rue['wind_speed'])
 		for rue in dataList:
+			u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
+			v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
+			wind_speed = float(rue['wind_speed'])
+
 			rue['date'] = self.newDateFormat(rue['date'])
 			if u_wind_component is not None and v_wind_component is not None:
 				rue['wind_speed'] = self.windSpeedFromTwoComponents(u_wind_component,v_wind_component)
