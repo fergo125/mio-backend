@@ -92,8 +92,10 @@ def localForecastUpdate(node_id):
         file_url = API_DIR+'sites/default/files/csvs/'+file_name
         csv_data_json = None
         with tempfile.TemporaryFile() as csv_file:
+            print "File url is " + file_url
             if file_utilities.downloadFile(file_url,csv_file):
                 print "CSV Downloaded"
+                print "File is none = " + str(csv_file is None)
                 my_local_forecast = LocalForecast.objects.get(taxonomy_id=model_data_dict['local_forecast_taxonomy_id'])
                 print "Using region with id " + str(my_local_forecast.pk)
                 csv_data_json = csv_processor.processData(csv_file, my_local_forecast.pk)
