@@ -85,10 +85,8 @@ class FileUtilities:
 		if(response.status_code == 200):
 			total_length = response.headers.get('content-length')
 			if total_length is None: # no content length header
-				print "total_length is none"
 				f.write(response.content)
 			else:
-				print "Total length of file = " + str(int(total_length))
 				dl = 0
 				total_length = int(total_length)
 				for data in response.iter_content():
@@ -131,6 +129,8 @@ class CSVProcessor:
 		print "Will read with DictReader"
 		readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
 		print "Did read with DictReader"
+		print "Type of readerCSV " + str(type(readerCSV))
+		print "Len of readerCSV " + str(len(readerCSV))
 		for rue in readerCSV:
 			data.append(rue)
 		if data:
