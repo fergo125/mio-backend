@@ -10,7 +10,7 @@ import tempfile
 #sys.path.append(os.path.join('..','..'))
 from csv_utilities import FileUtilities
 from csv_utilities import CSVProcessor
-from api.models import LocalForecast,RegionalForecast,WaveWarning
+from api.models import LocalForecast, LocalForecastEntry, RegionalForecast, WaveWarning
 
 
 paths={'text':['body','und','value'],
@@ -115,7 +115,7 @@ def localForecastUpdate(node_id):
 
 def saveLocalForecastEntries(data_json):
     print "Saving local forecast entries"
-    serialized_list = serializers.LocalForecastEntry(data=data_json, many=True)
+    serialized_list = serializers.LocalForecastEntryCreateSerializer(data=data_json, many=True)
     if serialized_list.is_valid():
 
         #Run one by one each new object
@@ -132,7 +132,7 @@ def saveLocalForecastEntries(data_json):
 
                 # There was an entry for it already
                 existing_entry = existing_entries[0]
-                update_entry = LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
+                update_entry = serializers.LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
                 if update_entry.is_valid():
                     update_entry.save()
                 else:
@@ -141,7 +141,7 @@ def saveLocalForecastEntries(data_json):
             else:
 
                 # There was no previous object
-                new_entry = LocalForecastEntryCreateSerializer(data=serialized_object)
+                new_entry = serializers.LocalForecastEntryCreateSerializer(data=serialized_object)
                 if new_entry.is_valid():
                     new_entry.save()
                 else:
@@ -149,6 +149,7 @@ def saveLocalForecastEntries(data_json):
                     print ("Couldn't serialize and create this entry: " , str(serialized_object))
     else:
         print "Serialized list is invalid"
+        print serialized_list.errors
 
 def updateLocalForecastText(new_text,forecast_id):
     localForecast = LocalForecast.objects.get(taxonomy_id=forecast_id)

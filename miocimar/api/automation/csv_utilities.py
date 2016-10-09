@@ -5,6 +5,7 @@ import datetime
 import requests
 import sys
 import os
+import dateutil.parser
 #Time,sig_wav_ht_surface,max_wav_ht_surface,peak_wav_dir_surface,peak_wav_per_surface,u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
 
 # def main():
@@ -134,8 +135,7 @@ class CSVProcessor:
 		if data:
 			del data[0]
 			newData = self.makeWindData(data,forecastID)
-			jsondata=json.dumps(newData)
-			return jsondata
+			return newData
 		else:
 			print "Will return none from processData"
 			return None
@@ -176,13 +176,8 @@ class CSVProcessor:
 	def windDirectionFromTwoComponents(self,u,v):
 		return (180/math.pi)*math.atan2(u,v)
 
-	def newDateFormat(self,date):
-		newDate=""
-		try:
-			newDate = datetime.datetime.strptime(date,'%Y-%m-%d %H:%M %Z').strftime('%Y-%m-%d %H:%M%Z')
-		except:
-			newdate=date
-		return newDate
+	def newDateFormat(self,date_as_string):
+		return dateutil.parser.parse(date_as_string).isoformat()
 #
 # if __name__== "__main__":
 # 	main()
