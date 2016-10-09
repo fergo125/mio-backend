@@ -6,6 +6,10 @@ import requests
 import sys
 import os
 import dateutil.parser
+import pytz
+
+cr_timezone = pytz.timezone('America/Costa_Rica')
+
 #Time,sig_wav_ht_surface,max_wav_ht_surface,peak_wav_dir_surface,peak_wav_per_surface,u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
 
 # def main():
@@ -145,6 +149,7 @@ class CSVProcessor:
 		newDataList = list()
 		for rue in dataList:
 			# Correction to the wave direction
+			rue['wave_direction'] = float(rue['wave_direction'])
 			rue['wave_direction'] -= 180
 			if rue['wave_direction'] < 0:
 				rue['wave_direction'] += 360
@@ -183,7 +188,7 @@ class CSVProcessor:
 		return math.atan2(u, v) * (180 / math.pi)
 
 	def newDateFormat(self,date_as_string):
-		return dateutil.parser.parse(date_as_string).isoformat()
+		return cr_timezone.localize(dateutil.parser.parse(date_as_string)).isoformat()
 #
 # if __name__== "__main__":
 # 	main()
