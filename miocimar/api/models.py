@@ -17,7 +17,7 @@ class LocalForecast(models.Model):
     large_map_url = models.CharField(max_length=200)
     # This comment should be updated each time a new Drupal
     # article appears
-    comment = models.CharField(max_length=2000)
+    comment = models.CharField(max_length=4000)
     def __unicode__(self):
         return self.name
 
