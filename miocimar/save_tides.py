@@ -5,32 +5,8 @@ import os
 data = []
 
 regions = [{
-'''    "name": "Bahia Culebra",
-    "file": "bahia_culebra"
-}, {
-    "name": "Bahia Uvita",
-    "file": "bahia_uvita"
-}, {
-    "name": "Golfito",
-    "file": "golfito"
-}, {
-    "name": "Golfo Elena",
-    "file": "golfo_elena"
-}, {
-    "name": "Isla del Coco",
-    "file": "isla_coco"
-}, {
-    "name": "Puerto Herradura",
-    "file": "puerto_herradura"
-}, {
-    "name": "Quepos",
-    "file": "quepos"
-}, {'''
     "name": "Puntarenas",
     "file": "puntarenas"
-'''}, {
-    "name": "Limon",
-    "file": "limon"'''
 }]
 '''
 if TideRegion.objects.count() != 0:
