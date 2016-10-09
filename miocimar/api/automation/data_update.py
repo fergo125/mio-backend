@@ -170,7 +170,7 @@ def regionalForecastUpdate(node_id):
     #Each kind of content has the data paths necessary according to its model.
     for i in data_path_regional:
         model_data_dict[i]=getParam(paths[i],node_data)
-    latest_forecast = RegionalForecast.objects.get(id=model_data_dict['regional_forecast_taxonomy_id'])
+    latest_forecast = RegionalForecast.objects.get(taxonomy_id=model_data_dict['regional_forecast_taxonomy_id'])
     if latest_forecast is not None:
         string_datetime =  datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
         string_datetime += "Z"
