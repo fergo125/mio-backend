@@ -14,6 +14,7 @@ if TideRegion.objects.count() != 0:
     TideEntry.objects.all().delete()
 '''
 for region_data in regions:
+    TideEntry.objects.filter(tide_region_id=42).delete()
     region = TideRegion.objects.get(pk=42) #(name=region_data["name"])
     #region.save()
 
