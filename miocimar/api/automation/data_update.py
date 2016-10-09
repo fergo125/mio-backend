@@ -93,7 +93,8 @@ def localForecastUpdate(node_id):
         csv_data_json = None
         with tempfile.TemporaryFile() as csv_file:
             if file_utilities.downloadFile(file_url,csv_file):
-                csv_data_json = csv_processor.processData(csv_file,model_data_dict['local_forecast_taxonomy_id'])
+                my_local_forecast = LocalForecast.objects.get(taxonomy_id=model_data_dict['local_forecast_taxonomy_id'])
+                csv_data_json = csv_processor.processData(csv_file, my_local_forecast.pk)
                 if csv_data_json is not None:
                     saveLocalForecastEntries(csv_data_json)
     if model_data_dict['text'] is not None:
