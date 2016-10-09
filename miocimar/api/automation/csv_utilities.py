@@ -128,7 +128,6 @@ class CSVProcessor:
 		print "Will read with DictReader"
 		readerCSV = csv.DictReader(array_of_lines,fieldnames=fn)
 		print "Did read with DictReader"
-		print "Len of readerCSV " + str(len(readerCSV))
 		for rue in readerCSV:
 			data.append(rue)
 		print "Len of data is " + str(len(data))
