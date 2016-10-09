@@ -91,7 +91,6 @@ class FileUtilities:
 				total_length = int(total_length)
 				for data in response.iter_content():
 					dl += len(data)
-					print "Writing " + str(len(data)) + " bytes"
 					f.write(data)
 					done = int(50 * dl / total_length)
 					#sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
@@ -123,16 +122,16 @@ class CSVProcessor:
 	Recibe el nombre del archivo en que se descargo el csv y ID del pronostico del cual se van a sacar los datos
 	de los archivos, el script tiene los campos de los datos en los cuales
 	"""
-	def processData(self,fileCSV,forecastID):
+	def processData(self, array_of_lines, forecastID):
 		fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
 		data= list()
 		print "Will read with DictReader"
-		readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
+		readerCSV = csv.DictReader(array_of_lines,fieldnames=fn)
 		print "Did read with DictReader"
-		print "Type of readerCSV " + str(type(readerCSV))
 		print "Len of readerCSV " + str(len(readerCSV))
 		for rue in readerCSV:
 			data.append(rue)
+		print "Len of data is " + str(len(data))
 		if data:
 			del data[0]
 			newData = self.makeWindData(data,forecastID)
