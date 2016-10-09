@@ -115,7 +115,7 @@ def localForecastUpdate(node_id):
 
 def saveLocalForecastEntries(data_json):
     print "Saving local forecast entries"
-    serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
+    serialized_list = serializers.LocalForecastEntry(data=data_json, many=True)
     if serialized_list.is_valid():
 
         #Run one by one each new object
