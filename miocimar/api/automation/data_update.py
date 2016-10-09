@@ -224,9 +224,9 @@ def sendNewNotification(notification_id):
         "priority" : "high",
         "notification": {
             "title": notification_object.title,
-            "data": notification_object.subtitle,
+            "body": notification_object.subtitle,
             "sound": "default"
-        }
+        },
         "data": {
             "notificationId": str(notification_id),
             "notificationLevel": str(notification_object.level)
