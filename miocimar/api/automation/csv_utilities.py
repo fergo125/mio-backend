@@ -182,7 +182,7 @@ class CSVProcessor:
 		print(response.content)
 
 	def windSpeedFromTwoComponents(self,u,v):
-		return math.sqrt(pow(u, 2) + pow(u, 2)) * 3.6
+		return math.sqrt(pow(u, 2) + pow(v, 2)) * 3.6
 
 	def windDirectionFromTwoComponents(self,u,v):
 		return math.atan2(u, v) * (180 / math.pi)
