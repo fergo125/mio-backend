@@ -93,9 +93,13 @@ def localForecastUpdate(node_id):
         csv_data_json = None
         with tempfile.TemporaryFile() as csv_file:
             if file_utilities.downloadFile(file_url,csv_file):
+                print "CSV Downloaded"
                 my_local_forecast = LocalForecast.objects.get(taxonomy_id=model_data_dict['local_forecast_taxonomy_id'])
+                print "Using region with id " + str(my_local_forecast.pk)
                 csv_data_json = csv_processor.processData(csv_file, my_local_forecast.pk)
                 if csv_data_json is not None:
+                    print "Processed CSV Data is not none"
+                    print "Len is " + str(len(csv_data_json))
                     saveLocalForecastEntries(csv_data_json)
     if model_data_dict['text'] is not None:
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
@@ -103,6 +107,7 @@ def localForecastUpdate(node_id):
 
 
 def saveLocalForecastEntries(data_json):
+    print "Saving local forecast entries"
     serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
     if serialized_list.is_valid():
 
@@ -135,6 +140,8 @@ def saveLocalForecastEntries(data_json):
                 else:
                     # TODO: Update this to a logging statement later
                     print ("Couldn't serialize and create this entry: " , str(serialized_object))
+    else:
+        print "Serialized list is invalid"
 
 def updateLocalForecastText(new_text,forecast_id):
     localForecast = LocalForecast.objects.get(taxonomy_id=forecast_id)
