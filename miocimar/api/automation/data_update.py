@@ -208,6 +208,7 @@ def sendNewNotification(notification_id):
     # Android body
     request_body_android = {
         "to": "/topics/notifications",
+        "priority" : "high",
         "data": {
             "title": notification_object.title,
             "subtitle": notification_object.subtitle,
