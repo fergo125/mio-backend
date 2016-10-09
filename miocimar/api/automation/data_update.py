@@ -101,6 +101,8 @@ def localForecastUpdate(node_id):
                     print "Processed CSV Data is not none"
                     print "Len is " + str(len(csv_data_json))
                     saveLocalForecastEntries(csv_data_json)
+                else:
+                    print "CSV Data is none"
     if model_data_dict['text'] is not None:
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
     return True

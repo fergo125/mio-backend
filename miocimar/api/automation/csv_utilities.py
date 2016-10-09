@@ -125,9 +125,10 @@ class CSVProcessor:
 	def processData(self,fileCSV,forecastID):
 		fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
 		data= list()
+		print "Will read with DictReader"
 		readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
+		print "Did read with DictReader"
 		for rue in readerCSV:
-			print(rue)
 			data.append(rue)
 		if data:
 			del data[0]
@@ -135,6 +136,7 @@ class CSVProcessor:
 			jsondata=json.dumps(newData)
 			return jsondata
 		else:
+			print "Will return none from processData"
 			return None
 
 	def makeWindData(self,dataList,forecastID):
