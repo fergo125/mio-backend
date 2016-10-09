@@ -145,7 +145,6 @@ class CSVProcessor:
 		for rue in dataList:
 			u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
 			v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
-			wind_speed = float(rue['wind_speed'])
 
 			rue['date'] = self.newDateFormat(rue['date'])
 			if u_wind_component is not None and v_wind_component is not None:
@@ -154,10 +153,12 @@ class CSVProcessor:
 			else:
 				rue['wind_speed'] = None
 				rue['wind_direction'] = None
-			if wind_speed is not None:
-				rue['wind_burst'] =wind_speed*1.3
+
+			if rue['wind_speed'] is not None:
+				wind_speed = float(rue['wind_speed'])
+				rue['wind_burst'] = wind_speed*1.3
 			else:
-				rue['wind_burst'] =None
+				rue['wind_burst'] = None
 			rue['local_forecast'] = forecastID
 			del rue['u-component_of_wind_height_above_ground']
 			del rue['v-component_of_wind_height_above_ground']
