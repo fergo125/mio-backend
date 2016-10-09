@@ -93,7 +93,7 @@ class FileUtilities:
 				total_length = int(total_length)
 				for data in response.iter_content():
 					dl += len(data)
-					print "Writing " + str(len(data)) " bytes"
+					print "Writing " + str(len(data)) + " bytes"
 					f.write(data)
 					done = int(50 * dl / total_length)
 					#sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
