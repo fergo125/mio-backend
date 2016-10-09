@@ -140,9 +140,15 @@ class CSVProcessor:
 			print "Will return none from processData"
 			return None
 
-	def makeWindData(self,dataList,forecastID):
+	# And also fix the wave direction
+	def makeWindData(self, dataList, forecastID):
 		newDataList = list()
 		for rue in dataList:
+			# Correction to the wave direction
+			rue['wave_direction'] -= 180
+			if rue['wave_direction'] < 0:
+				rue['wave_direction'] += 360
+
 			u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
 			v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
 
@@ -171,10 +177,10 @@ class CSVProcessor:
 		print(response.content)
 
 	def windSpeedFromTwoComponents(self,u,v):
-		return math.sqrt(pow(u,2) + pow(u,2))
+		return math.sqrt(pow(u, 2) + pow(u, 2)) * 3.6
 
 	def windDirectionFromTwoComponents(self,u,v):
-		return (180/math.pi)*math.atan2(u,v)
+		return math.atan2(u, v) * (180 / math.pi)
 
 	def newDateFormat(self,date_as_string):
 		return dateutil.parser.parse(date_as_string).isoformat()
