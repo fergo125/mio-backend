@@ -201,11 +201,39 @@ def getWarningType(warning_type):
 
 def sendNewNotification(notification_id):
     notification_object = WaveWarning.objects.get(id=int(notification_id))
-    print(notification_object)
+
     access_key = 'key='+FIREBASE_KEY
-    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+notification_object.subtitle+'","notificationId": "'+str(notification_id)+'","notificationLevel": "'+str(notification_object.level)+'"}}'
     request_headers = {'Content-Type':'application/json','Authorization':access_key}
-    request_body_encoded = request_body.encode('utf-8')
-    print(request_body_encoded)
-    response = requests.post(FIREBASE_URL,data=request_body_encoded,headers=request_headers)
-    print(response)
+
+    # Android body
+    request_body_android = {
+        "to": "/topics/notifications",
+        "data": {
+            "title": notification_object.title,
+            "subtitle": notification_object.subtitle,
+            "notificationId": str(notification_id),
+            "notificationLevel": str(notification_object.level)
+        }
+    }
+    encoded_android_request = json.dumps(request_body_android).encode('utf-8')
+
+    # iOS body
+    request_body_ios = {
+        "to": "/topics/notificationsios",
+        "content_available": True,
+        "priority" : "high",
+        "notification": {
+            "title": notification_object.title,
+            "data": notification_object.subtitle,
+            "sound": "default"
+        }
+        "data": {
+            "notificationId": str(notification_id),
+            "notificationLevel": str(notification_object.level)
+        }
+    }
+    encoded_ios_request = json.dumps(request_body_ios).encode('utf-8')
+
+
+    response = requests.post(FIREBASE_URL,data=encoded_ios_request,headers=request_headers)
+    response = requests.post(FIREBASE_URL,data=encoded_android_request,headers=request_headers)
