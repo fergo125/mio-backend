@@ -85,12 +85,15 @@ class FileUtilities:
 		if(response.status_code == 200):
 			total_length = response.headers.get('content-length')
 			if total_length is None: # no content length header
+				print "total_length is none"
 				f.write(response.content)
 			else:
+				print "Total length of file = " + str(int(total_length))
 				dl = 0
 				total_length = int(total_length)
 				for data in response.iter_content():
 					dl += len(data)
+					print "Writing " + str(len(data)) " bytes"
 					f.write(data)
 					done = int(50 * dl / total_length)
 					#sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50-done)))
