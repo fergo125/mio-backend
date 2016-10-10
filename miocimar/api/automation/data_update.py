@@ -11,7 +11,10 @@ import tempfile
 from csv_utilities import FileUtilities
 from csv_utilities import CSVProcessor
 from api.models import LocalForecast, LocalForecastEntry, RegionalForecast, WaveWarning
+import dateutil.parser
+import pytz
 
+cr_timezone = pytz.timezone('America/Costa_Rica')
 
 paths={'text':['body','und','value'],
 'csv_file':['field_csv','und','filename'],
@@ -199,7 +202,8 @@ def warningUpdate(node_id):
     except:
         warning = WaveWarning(pk=int(node_id))
     warning.level = getWarningType(model_data_dict["level"])
-    warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')+"Z"
+    date_as_string = model_data_dict["date"]
+    warning.date = cr_timezone.localize(dateutil.parser.parse(date_as_string)).isoformat()
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
     warning.subtitle=model_data_dict["subtitle"]
