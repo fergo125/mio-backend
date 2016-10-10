@@ -14,8 +14,6 @@ from api.models import LocalForecast, LocalForecastEntry, RegionalForecast, Wave
 import dateutil.parser
 import pytz
 
-cr_timezone = pytz.timezone('America/Costa_Rica')
-
 paths={'text':['body','und','value'],
 'csv_file':['field_csv','und','filename'],
 'gif_file':['field_imagen_movil','und','filename'],
@@ -175,8 +173,10 @@ def regionalForecastUpdate(node_id):
         model_data_dict[i]=getParam(paths[i],node_data)
     latest_forecast = RegionalForecast.objects.get(taxonomy_id=model_data_dict['regional_forecast_taxonomy_id'])
     if latest_forecast is not None:
-        date_as_string =  model_data_dict["date"]
-        latest_forecast.date = cr_timezone.localize(dateutil.parser.parse(date_as_string)).isoformat()
+        date_as_string = model_data_dict["date"]
+        print date_as_string
+        latest_forecast.date = pytz.utc.localize(dateutil.parser.parse(date_as_string)).isoformat()
+        print latest_forecast.date
         latest_forecast.text = model_data_dict["text"]
         latest_forecast.animation_url = API_DIR + "sites/default/files/gifs/" + model_data_dict["gif_file"]
         latest_forecast.save()
@@ -201,7 +201,7 @@ def warningUpdate(node_id):
         warning = WaveWarning(pk=int(node_id))
     warning.level = getWarningType(model_data_dict["level"])
     date_as_string = model_data_dict["date"]
-    warning.date = cr_timezone.localize(dateutil.parser.parse(date_as_string)).isoformat()
+    warning.date = pytz.utc.localize(dateutil.parser.parse(date_as_string)).isoformat()
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
     warning.subtitle = model_data_dict["subtitle"]

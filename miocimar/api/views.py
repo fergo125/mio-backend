@@ -96,11 +96,13 @@ class LocalForecastsViewSet(ModelViewSet):
         """
         local_forecast_region = self.get_object()
         pk = local_forecast_region.pk
-        start_date = datetime.date.today() - datetime.timedelta(days=1)
-        end_date = datetime.date.today() + datetime.timedelta(days=7)
+
+        # Find latest record
+        latest = LocalForecastEntry.objects.order_by('-date')[:1][0]
+        start_date = latest.date - datetime.timedelta(days=7)
+
         local_forecast_entries = LocalForecastEntry.objects \
             .filter(date__gt=start_date) \
-            .filter(date__lt=end_date) \
             .filter(local_forecast=pk)
         serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
         return Response(serializer.data)
