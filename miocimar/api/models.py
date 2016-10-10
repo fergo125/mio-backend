@@ -55,6 +55,8 @@ class TideRegion(models.Model):
     medium_icon_url = models.CharField(max_length=200)
     large_icon_url = models.CharField(max_length=200)
 
+    order = models.IntegerField()
+
     def __unicode__(self):
         return self.name
 
