@@ -98,7 +98,8 @@ class LocalForecastsViewSet(ModelViewSet):
         pk = local_forecast_region.pk
 
         # Find latest record
-        latest = LocalForecastEntry.objects.order_by('-date')[:1][0]
+        latest = LocalForecastEntry.objects.filter(local_forecast=pk) \
+            .order_by('-date')[:1][0]
         start_date = latest.date - datetime.timedelta(days=7)
 
         local_forecast_entries = LocalForecastEntry.objects \
