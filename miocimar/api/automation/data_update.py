@@ -22,13 +22,14 @@ paths={'text':['body','und','value'],
 'regional_forecast_taxonomy_id':['field_taxonomia_regional','und','tid'],
 'title':['title'],
 'level':['field_tipo_de_alerta','und','value'],
-'subtitle':['field_subtitle','und','value']
+'subtitle':['field_subtitle','und','value'],
+'notification':['field_notificacion','und','value']
 }
 
 
 data_path_local={'text','csv_file','date','element_type','local_forecast_taxonomy_id'}
 data_path_regional={'text','date','gif_file','regional_forecast_taxonomy_id'}
-data_path_warning={'text','level','date','title','subtitle'}
+data_path_warning={'text','level','date','title','subtitle','notification'}
 
 localArrayProcess={}
 
@@ -188,7 +189,8 @@ def warningUpdate(node_id):
     warning.title = model_data_dict["title"]
     warning.subtitle=model_data_dict["subtitle"]
     warning.save()
-    sendNewNotification(node_id)
+    if int(model_data_dict['notification']):
+        sendNewNotification(node_id)
     return True
 
 def getWarningType(warning_type):
