@@ -5,6 +5,11 @@ import datetime
 import requests
 import sys
 import os
+import dateutil.parser
+import pytz
+
+cr_timezone = pytz.timezone('America/Costa_Rica')
+
 #Time,sig_wav_ht_surface,max_wav_ht_surface,peak_wav_dir_surface,peak_wav_per_surface,u-component_of_wind_height_above_ground,v-component_of_wind_height_above_ground
 
 # def main():
@@ -122,27 +127,36 @@ class CSVProcessor:
 	Recibe el nombre del archivo en que se descargo el csv y ID del pronostico del cual se van a sacar los datos
 	de los archivos, el script tiene los campos de los datos en los cuales
 	"""
-	def processData(self,fileCSV,forecastID):
+	def processData(self, array_of_lines, forecastID):
 		fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
 		data= list()
-		readerCSV = csv.DictReader(fileCSV,fieldnames=fn)
+		print "Will read with DictReader"
+		readerCSV = csv.DictReader(array_of_lines,fieldnames=fn)
+		print "Did read with DictReader"
 		for rue in readerCSV:
-			print(rue)
 			data.append(rue)
+		print "Len of data is " + str(len(data))
 		if data:
 			del data[0]
 			newData = self.makeWindData(data,forecastID)
-			jsondata=json.dumps(newData)
-			return jsondata
+			return newData
 		else:
+			print "Will return none from processData"
 			return None
 
-	def makeWindData(self,dataList,forecastID):
+	# And also fix the wave direction
+	def makeWindData(self, dataList, forecastID):
 		newDataList = list()
-		u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
-		v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
-		wind_speed = float(rue['wind_speed'])
 		for rue in dataList:
+			# Correction to the wave direction
+			rue['wave_direction'] = float(rue['wave_direction'])
+			rue['wave_direction'] -= 180
+			if rue['wave_direction'] < 0:
+				rue['wave_direction'] += 360
+
+			u_wind_component = float(rue['u-component_of_wind_height_above_ground'])
+			v_wind_component = float(rue['v-component_of_wind_height_above_ground'])
+
 			rue['date'] = self.newDateFormat(rue['date'])
 			if u_wind_component is not None and v_wind_component is not None:
 				rue['wind_speed'] = self.windSpeedFromTwoComponents(u_wind_component,v_wind_component)
@@ -150,10 +164,12 @@ class CSVProcessor:
 			else:
 				rue['wind_speed'] = None
 				rue['wind_direction'] = None
-			if wind_speed is not None:
-				rue['wind_burst'] =wind_speed*1.3
+
+			if rue['wind_speed'] is not None:
+				wind_speed = float(rue['wind_speed'])
+				rue['wind_burst'] = wind_speed*1.3
 			else:
-				rue['wind_burst'] =None
+				rue['wind_burst'] = None
 			rue['local_forecast'] = forecastID
 			del rue['u-component_of_wind_height_above_ground']
 			del rue['v-component_of_wind_height_above_ground']
@@ -166,18 +182,13 @@ class CSVProcessor:
 		print(response.content)
 
 	def windSpeedFromTwoComponents(self,u,v):
-		return math.sqrt(pow(u,2) + pow(u,2))
+		return math.sqrt(pow(u, 2) + pow(v, 2)) * 3.6
 
 	def windDirectionFromTwoComponents(self,u,v):
-		return (180/math.pi)*math.atan2(u,v)
+		return math.atan2(u, v) * (180 / math.pi)
 
-	def newDateFormat(self,date):
-		newDate=""
-		try:
-			newDate = datetime.datetime.strptime(date,'%Y-%m-%d %H:%M %Z').strftime('%Y-%m-%d %H:%M%Z')
-		except:
-			newdate=date
-		return newDate
+	def newDateFormat(self,date_as_string):
+		return cr_timezone.localize(dateutil.parser.parse(date_as_string)).isoformat()
 #
 # if __name__== "__main__":
 # 	main()

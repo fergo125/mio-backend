@@ -7,3 +7,4 @@ whitenoise==3.2
 requests==2.11.1
 django-extensions==1.7.4
 python-dateutil==2.5.3
+pytz==2016.7

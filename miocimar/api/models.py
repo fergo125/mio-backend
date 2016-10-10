@@ -3,6 +3,7 @@ from django.db import models
 
 class LocalForecast(models.Model):
     id = models.AutoField(primary_key=True)
+    taxonomy_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=50)
     # If available
     english_name = models.CharField(max_length=50)
@@ -16,7 +17,7 @@ class LocalForecast(models.Model):
     large_map_url = models.CharField(max_length=200)
     # This comment should be updated each time a new Drupal
     # article appears
-    comment = models.CharField(max_length=2000)
+    comment = models.CharField(max_length=4000)
     def __unicode__(self):
         return self.name
 
@@ -54,6 +55,8 @@ class TideRegion(models.Model):
     medium_icon_url = models.CharField(max_length=200)
     large_icon_url = models.CharField(max_length=200)
 
+    order = models.IntegerField()
+
     def __unicode__(self):
         return self.name
 
@@ -67,6 +70,8 @@ class TideEntry(models.Model):
 
 class RegionalForecast(models.Model):
     id = models.AutoField(primary_key=True)
+    taxonomy_id = models.IntegerField(unique=True)
+
     name = models.CharField(max_length=50)
     # If available
     english_name = models.CharField(max_length=50)

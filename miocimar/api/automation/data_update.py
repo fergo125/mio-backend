@@ -10,8 +10,9 @@ import tempfile
 #sys.path.append(os.path.join('..','..'))
 from csv_utilities import FileUtilities
 from csv_utilities import CSVProcessor
-from api.models import LocalForecast,RegionalForecast,WaveWarning
-
+from api.models import LocalForecast, LocalForecastEntry, RegionalForecast, WaveWarning
+import dateutil.parser
+import pytz
 
 paths={'text':['body','und','value'],
 'csv_file':['field_csv','und','filename'],
@@ -92,18 +93,31 @@ def localForecastUpdate(node_id):
         file_name = model_data_dict['csv_file']
         file_url = API_DIR+'sites/default/files/csvs/'+file_name
         csv_data_json = None
-        with tempfile.TemporaryFile() as csv_file:
-            if file_utilities.downloadFile(file_url,csv_file):
-                csv_data_json = csv_processor.processData(csv_file,model_data_dict['local_forecast_taxonomy_id'])
-                if csv_data_json is not None:
-                    saveLocalForecastEntries(csv_data_json)
+
+        # TODO: Change to get a string and pass it as an array
+        csv_content = requests.get(file_url).text
+        print "File url is " + file_url
+        print "CSV Downloaded"
+        print "File size is " + str(len(csv_content))
+        csv_lines = csv_content.splitlines()
+        print "Total csv lines is " + str(len(csv_lines))
+        my_local_forecast = LocalForecast.objects.get(taxonomy_id=model_data_dict['local_forecast_taxonomy_id'])
+        print "Using region with id " + str(my_local_forecast.pk)
+        csv_data_json = csv_processor.processData(csv_lines, my_local_forecast.pk)
+        if csv_data_json is not None:
+            print "Processed CSV Data is not none"
+            print "Len is " + str(len(csv_data_json))
+            saveLocalForecastEntries(csv_data_json)
+        else:
+            print "CSV Data is none"
     if model_data_dict['text'] is not None:
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
     return True
 
 
 def saveLocalForecastEntries(data_json):
-    serialized_list = serserializers.LocalForecastEntry(data=data_json, many=True)
+    print "Saving local forecast entries"
+    serialized_list = serializers.LocalForecastEntryCreateSerializer(data=data_json, many=True)
     if serialized_list.is_valid():
 
         #Run one by one each new object
@@ -120,7 +134,7 @@ def saveLocalForecastEntries(data_json):
 
                 # There was an entry for it already
                 existing_entry = existing_entries[0]
-                update_entry = LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
+                update_entry = serializers.LocalForecastEntryCreateSerializer(existing_entry, data=serialized_object)
                 if update_entry.is_valid():
                     update_entry.save()
                 else:
@@ -129,15 +143,18 @@ def saveLocalForecastEntries(data_json):
             else:
 
                 # There was no previous object
-                new_entry = LocalForecastEntryCreateSerializer(data=serialized_object)
+                new_entry = serializers.LocalForecastEntryCreateSerializer(data=serialized_object)
                 if new_entry.is_valid():
                     new_entry.save()
                 else:
                     # TODO: Update this to a logging statement later
                     print ("Couldn't serialize and create this entry: " , str(serialized_object))
+    else:
+        print "Serialized list is invalid"
+        print serialized_list.errors
 
 def updateLocalForecastText(new_text,forecast_id):
-    localForecast = LocalForecast.objects.get(pk=forecast_id)
+    localForecast = LocalForecast.objects.get(taxonomy_id=forecast_id)
     if localForecast is not None:
         localForecast.comment = new_text
         localForecast.save()
@@ -155,12 +172,12 @@ def regionalForecastUpdate(node_id):
     #Each kind of content has the data paths necessary according to its model.
     for i in data_path_regional:
         model_data_dict[i]=getParam(paths[i],node_data)
-    latest_forecast = RegionalForecast.objects.get(id=model_data_dict['regional_forecast_taxonomy_id'])
+    latest_forecast = RegionalForecast.objects.get(taxonomy_id=model_data_dict['regional_forecast_taxonomy_id'])
     if latest_forecast is not None:
-        string_datetime =  datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
-        string_datetime += "Z"
-        #latest_forecast.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
-        latest_forecast.date = string_datetime
+        date_as_string = model_data_dict["date"]
+        print date_as_string
+        latest_forecast.date = pytz.utc.localize(dateutil.parser.parse(date_as_string)).isoformat()
+        print latest_forecast.date
         latest_forecast.text = model_data_dict["text"]
         latest_forecast.animation_url = API_DIR + "sites/default/files/gifs/" + model_data_dict["gif_file"]
         latest_forecast.save()
@@ -184,10 +201,11 @@ def warningUpdate(node_id):
     except:
         warning = WaveWarning(pk=int(node_id))
     warning.level = getWarningType(model_data_dict["level"])
-    warning.date = datetime.datetime.strptime(model_data_dict["date"],'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')+"Z"
+    date_as_string = model_data_dict["date"]
+    warning.date = pytz.utc.localize(dateutil.parser.parse(date_as_string)).isoformat()
     warning.text = model_data_dict["text"]
     warning.title = model_data_dict["title"]
-    warning.subtitle=model_data_dict["subtitle"]
+    warning.subtitle = model_data_dict["subtitle"]
     warning.save()
     if int(model_data_dict['notification']):
         sendNewNotification(node_id)
@@ -203,11 +221,40 @@ def getWarningType(warning_type):
 
 def sendNewNotification(notification_id):
     notification_object = WaveWarning.objects.get(id=int(notification_id))
-    print(notification_object)
+
     access_key = 'key='+FIREBASE_KEY
-    request_body = r'{ "to": "/topics/notifications","data": {"title": "'+notification_object.title+'","subtitle": "'+notification_object.subtitle+'","notificationId": "'+str(notification_id)+'","notificationLevel": "'+str(notification_object.level)+'"}}'
     request_headers = {'Content-Type':'application/json','Authorization':access_key}
-    request_body_encoded = request_body.encode('utf-8')
-    print(request_body_encoded)
-    response = requests.post(FIREBASE_URL,data=request_body_encoded,headers=request_headers)
-    print(response)
+
+    # Android body
+    request_body_android = {
+        "to": "/topics/notifications",
+        "priority" : "high",
+        "data": {
+            "title": notification_object.title,
+            "subtitle": notification_object.subtitle,
+            "notificationId": str(notification_id),
+            "notificationLevel": str(notification_object.level)
+        }
+    }
+    encoded_android_request = json.dumps(request_body_android).encode('utf-8')
+
+    # iOS body
+    request_body_ios = {
+        "to": "/topics/notificationsios",
+        "content_available": True,
+        "priority" : "high",
+        "notification": {
+            "title": notification_object.title,
+            "body": notification_object.subtitle,
+            "sound": "default"
+        },
+        "data": {
+            "notificationId": str(notification_id),
+            "notificationLevel": str(notification_object.level)
+        }
+    }
+    encoded_ios_request = json.dumps(request_body_ios).encode('utf-8')
+
+
+    response = requests.post(FIREBASE_URL,data=encoded_ios_request,headers=request_headers)
+    response = requests.post(FIREBASE_URL,data=encoded_android_request,headers=request_headers)
