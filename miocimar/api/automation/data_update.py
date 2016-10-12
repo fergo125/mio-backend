@@ -34,7 +34,7 @@ data_path_warning={'text','level','date','title','subtitle','notification'}
 
 localArrayProcess={}
 
-API_DIR= r"http://miocimar-test.ucr.ac.cr/"
+API_DIR= r"http://miocimar.ucr.ac.cr/"
 LOCAL_FORECAST_TYPE = r"pronostico_oleaje_y_viento"
 FIREBASE_URL="https://fcm.googleapis.com/fcm/send"
 
