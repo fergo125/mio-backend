@@ -181,3 +181,5 @@ LOGGING = {
         }
     }
 }
+
+ADMINS = (('Alonso Vega', 'lavb91@gmail.com'),)
