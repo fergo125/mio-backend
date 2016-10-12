@@ -26,7 +26,7 @@ SECRET_KEY = 'eo)+35$-^#0fm*7uv$uigsiywp83j=1sri7e@=8r)@i$17hfci'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://mio-cimar.herokuapp.com', 'http://mio-cimar.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
