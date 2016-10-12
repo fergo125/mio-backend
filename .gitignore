@@ -46,6 +46,7 @@ coverage.xml
 *.log
 *.pot
 *.sqlite3
+*/*.sqlite3
 
 api/test.py
 # Sphinx documentation
@@ -54,3 +55,4 @@ docs/_build/
 # Virtual environments
 env/
 venv/
+
