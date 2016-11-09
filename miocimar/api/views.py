@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
 import datetime
 import automation.data_update as data_updater
 import json
@@ -18,6 +19,7 @@ import time
 import dateutil.parser
 import itertools
 import thread
+import pytz
 
 logger = logging.getLogger("mioLogger")
 
@@ -216,13 +218,13 @@ class DrupalTidesViewset(ViewSet):
             content = {'Message':'tide_region not found in request'}
             return Response(content,status=status_return)
         else:
-            actual_tides = TideEntry.objects.filter(date__gt=datetime.datetime.now(),\
-                date__lt=(datetime.datetime.now()+ datetime.timedelta(days=3)),\
+            actual_tides = TideEntry.objects.filter(date__gt=timezone.now(),\
+                date__lt=(timezone.now()+ timezone.timedelta(days=3)),\
                 tide_region=request.query_params['tide_region'])
-            epoch = datetime.datetime.utcfromtimestamp(0)
+            epoch = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.UTC)
             response_tides = dict()
             for tide in actual_tides:
-                tide_date = int((tide.date- epoch).total_seconds() * 1000)
+                tide_date = int((tide.date- epoch.astimezone(tide.date.tzinfo)).total_seconds() * 1000)
                 response_tides[tide_date]=tide.tide_height
             return Response(json.dumps(response_tides))
         # for key in request.data:
