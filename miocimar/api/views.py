@@ -203,3 +203,42 @@ class UpdateWarningDataViewSet(ViewSet):
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
     serializer_class = RegionalForecastSerializer
+
+class DrupalTidesViewset(ViewSet):
+    def list(self,request):
+        print(request.query_params)
+        print(request.data)
+        for key in request.query_params:
+            print('key: '+ key)
+        if "tide_region" not in request.query_params:
+            logger.error("tide_region not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'tide_region not found in request'}
+            return Response(content,status=status_return)
+        else:
+            actual_tides = TideEntry.objects.filter(date__gt=datetime.datetime.now(),\
+                date__lt=(datetime.datetime.now()+ datetime.timedelta(days=3)),\
+                tide_region=request.query_params['tide_region'])
+            epoch = datetime.datetime.utcfromtimestamp(0)
+            response_tides = dict()
+            for tide in actual_tides:
+                tide_date = int((tide.date- epoch).total_seconds() * 1000)
+                response_tides[tide_date]=tide.tide_height
+            return Response(json.dumps(response_tides))
+        # for key in request.data:
+        #     print('key: '+ key)
+        # if "tide_region" not in request.data:
+        #     logger.error("tide_region not found in request")
+        #     status_return = status.HTTP_404_NOT_FOUND
+        #     content = {'Message':'tide_region not found in request'}
+        #     return Response(content,status=status_return)
+        # else:
+        #     actual_tides = TideEntry.objects.filter(date__gt=datetime.datetime.now(),\
+        #         date__lt=(datetime.datetime.now()+ datetime.timedelta(days=3)),\
+        #         tide_region=request.data['tide_region'])
+        #     epoch = datetime.datetime.utcfromtimestamp(0)
+        #     response_tides = dict()
+        #     for tide in actual_tides:
+        #         tide_date = int((tide.date- epoch).total_seconds() * 1000)
+        #         response_tides[tide_date]=tide.tide_height
+        #     return Response(json.dumps(response_tides))

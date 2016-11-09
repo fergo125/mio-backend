@@ -16,6 +16,9 @@ router.register(r'update_local_forecast_data', views.UpdateLocalForecastDataView
 router.register(r'update_regional_forecast_data', views.UpdateRegionalForecastDataViewSet, 'update_regional_forecast_data')
 router.register(r'update_warning_data', views.UpdateWarningDataViewSet, 'update_warning_data')
 
+router.register(r'drupal_tides',views.DrupalTidesViewset,'drupal_tides')
+
+
 urlpatterns = [
     url(r'^', include(router.urls))
 ]
