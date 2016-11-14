@@ -222,11 +222,16 @@ class DrupalTidesViewset(ViewSet):
                 date__lt=(timezone.now()+ timezone.timedelta(days=3)),\
                 tide_region=request.query_params['tide_region'])
             epoch = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.UTC)
-            response_tides = dict()
+            response_list = list()
             for tide in actual_tides:
-                tide_date = int((tide.date- epoch.astimezone(tide.date.tzinfo)).total_seconds() * 1000)
-                response_tides[tide_date]=tide.tide_height
-            return Response(json.dumps(response_tides))
+                response_elements = list()
+                tide_date = int((tide.date- epoch.astimezone(tide.date.tzinfo)).total_seconds())
+                response_elements.append(tide_date)
+                response_elements.append(1+tide.tide_height)
+                response_list.append(response_elements)
+
+            print(response_list)
+            return Response(json.dumps(response_list))
         # for key in request.data:
         #     print('key: '+ key)
         # if "tide_region" not in request.data:
