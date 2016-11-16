@@ -207,9 +207,10 @@ class RegionalForecastViewSet(ModelViewSet):
     serializer_class = RegionalForecastSerializer
 
 class DrupalTidesViewset(ViewSet):
-    def list(self,request):
+    def list(self,request,format):
         print(request.query_params)
         print(request.data)
+
         for key in request.query_params:
             print('key: '+ key)
         if "tide_region" not in request.query_params:
@@ -221,17 +222,16 @@ class DrupalTidesViewset(ViewSet):
             actual_tides = TideEntry.objects.filter(date__gt=timezone.now(),\
                 date__lt=(timezone.now()+ timezone.timedelta(days=3)),\
                 tide_region=request.query_params['tide_region'])
-            epoch = datetime.datetime.utcfromtimestamp(0).replace(tzinfo=pytz.UTC)
+            epoch = datetime.datetime.utcfromtimestamp(0)
             response_list = list()
             for tide in actual_tides:
                 response_elements = list()
-                tide_date = int((tide.date- epoch.astimezone(tide.date.tzinfo)).total_seconds())
-                response_elements.append(tide_date)
-                response_elements.append(1+tide.tide_height)
-                response_list.append(response_elements)
+                #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
+                tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
+                response_list.append([tide_date,1+tide.tide_height])
 
             print(response_list)
-            return Response(json.dumps(response_list))
+            return Response(response_list)
         # for key in request.data:
         #     print('key: '+ key)
         # if "tide_region" not in request.data:
