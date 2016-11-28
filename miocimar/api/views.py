@@ -210,17 +210,19 @@ class DrupalTidesViewset(ViewSet):
     def list(self,request,format):
         print(request.query_params)
         print(request.data)
-
-        for key in request.query_params:
-            print('key: '+ key)
         if "tide_region" not in request.query_params:
             logger.error("tide_region not found in request")
             status_return = status.HTTP_404_NOT_FOUND
             content = {'Message':'tide_region not found in request'}
             return Response(content,status=status_return)
         else:
-            actual_tides = TideEntry.objects.filter(date__gt=timezone.now(),\
-                date__lt=(timezone.now()+ timezone.timedelta(days=3)),\
+            begin_date = timezone.now()
+            end_date = timezone.now()+ timezone.timedelta(days=3)
+            if "begin_date" in request.query_params and "end_date" in request.query_params:
+                begin_date = request.query_params['begin_date']
+                end_date = request.query_params['end_date']
+            actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
+                date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
             epoch = datetime.datetime.utcfromtimestamp(0)
             response_list = list()
@@ -228,7 +230,7 @@ class DrupalTidesViewset(ViewSet):
                 response_elements = list()
                 #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
                 tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
-                response_list.append([tide_date,1+tide.tide_height])
+                response_list.append([tide_date,tide.tide_height])
 
             print(response_list)
             return Response(response_list)

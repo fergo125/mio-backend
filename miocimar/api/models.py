@@ -54,7 +54,7 @@ class TideRegion(models.Model):
     small_icon_url = models.CharField(max_length=200)
     medium_icon_url = models.CharField(max_length=200)
     large_icon_url = models.CharField(max_length=200)
-
+    medium_level = models.FloatField()
     order = models.IntegerField()
 
     def __unicode__(self):
@@ -64,7 +64,7 @@ class TideEntry(models.Model):
     id = models.AutoField(primary_key=True)
     tide_region = models.ForeignKey(TideRegion, on_delete=models.CASCADE)
     date = models.DateTimeField()
-    tide_height = models.FloatField()
+    tide_height = models.FloatField(    )
     is_high_tide = models.BooleanField()
     moon = models.IntegerField()
 
