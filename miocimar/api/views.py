@@ -230,7 +230,7 @@ class DrupalTidesViewset(ViewSet):
             for tide in actual_tides:
                 response_elements = list()
                 #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
-                tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds())
+                tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
                 response_list.append([tide_date,tide.tide_height])
             print(response_list)
             return Response(response_list)
