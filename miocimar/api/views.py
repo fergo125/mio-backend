@@ -225,7 +225,7 @@ class DrupalTidesViewset(ViewSet):
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
             epoch = datetime.datetime.now()
-            epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0)
+            epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
             response_list = list()
             for tide in actual_tides:
                 response_elements = list()
