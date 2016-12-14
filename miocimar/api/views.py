@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from dateutil.tz import tzlocal
 import datetime
 import automation.data_update as data_updater
 import json
@@ -224,7 +225,8 @@ class DrupalTidesViewset(ViewSet):
             actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
-            epoch = datetime.datetime.now()
+            costa_rica_tz = pytz.timezone('America/Costa_Rica')
+            epoch = datetime.datetime.now(costa_rica_tz)
             epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
             response_list = list()
             for tide in actual_tides:
@@ -232,8 +234,13 @@ class DrupalTidesViewset(ViewSet):
                 #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
                 tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
                 response_list.append([tide_date,tide.tide_height])
-            print(response_list)
-            return Response(response_list)
+            medium_level = (TideRegion.objects.filter(id = request.query_params['tide_region'])[0]).medium_level
+            response_dict = dict()
+            response_dict['medium_level'] = medium_level
+            response_dict['days'] = response_list
+
+            print(response_dict)
+            return Response(json.dumps(response_dict))
         # for key in request.data:
         #     print('key: '+ key)
         # if "tide_region" not in request.data:
