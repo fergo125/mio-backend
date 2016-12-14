@@ -217,15 +217,15 @@ class DrupalTidesViewset(ViewSet):
             content = {'Message':'tide_region not found in request'}
             return Response(content,status=status_return)
         else:
-            begin_date = timezone.now()
-            end_date = timezone.now()+ timezone.timedelta(days=3)
+            costa_rica_tz = pytz.timezone('America/Costa_Rica')
+            begin_date = datetime.datetime.now(costa_rica_tz)
+            end_date = timezone.now()+ datetime.timedelta(days=3)
             if "begin_date" in request.query_params and "end_date" in request.query_params:
                 begin_date = request.query_params['begin_date']
                 end_date = request.query_params['end_date']
             actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
-            costa_rica_tz = pytz.timezone('America/Costa_Rica')
             epoch = datetime.datetime.now(costa_rica_tz)
             epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
             response_list = list()
