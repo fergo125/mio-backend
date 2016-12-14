@@ -229,9 +229,14 @@ class DrupalTidesViewset(ViewSet):
             actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
+            previous_day = begin_date - datetime.timedelta(days=1)
+            previous_day_items = TideEntry.objects.filter(date__gt=previous_day,date__lt=begin_date)
+            previous_day_last_item = previous_day_items[len(previous_day_items)-1]
             epoch = datetime.datetime.now(costa_rica_tz)
             epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
             response_list = list()
+            last_item_date = int((previous_day_last_item.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
+            response_list.append([last_item_date,last_item_date.tide_height])
             for tide in actual_tides:
                 response_elements = list()
                 #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
