@@ -238,9 +238,9 @@ class DrupalTidesViewset(ViewSet):
             response_dict = dict()
             response_dict['medium_level'] = medium_level
             response_dict['days'] = response_list
-
+            status_return = status.HTTP_200_OK
             print(response_dict)
-            return Response(json.dumps(response_dict))
+            return Response(response_dict,status= status_return)
         # for key in request.data:
         #     print('key: '+ key)
         # if "tide_region" not in request.data:
