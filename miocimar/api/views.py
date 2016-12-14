@@ -220,11 +220,12 @@ class DrupalTidesViewset(ViewSet):
             costa_rica_tz = pytz.timezone('America/Costa_Rica')
             begin_date = datetime.datetime.now(costa_rica_tz)
             end_date = timezone.now()+ datetime.timedelta(days=3)
-            begin_date = begin_date.replace(hour=0,minute=0,micro=0)
-            end_date = end_date.replace(hour=0,minute=0,micro=0)
+
             if "begin_date" in request.query_params and "end_date" in request.query_params:
                 begin_date = request.query_params['begin_date']
                 end_date = request.query_params['end_date']
+            begin_date = begin_date.replace(hour=0,minute=0,microsecond=0)
+            end_date = end_date.replace(hour=0,minute=0,microsecond=0)
             actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
