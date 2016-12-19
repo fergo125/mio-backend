@@ -220,6 +220,7 @@ class DrupalTidesViewset(ViewSet):
             costa_rica_tz = pytz.timezone('America/Costa_Rica')
             begin_date = datetime.datetime.now(costa_rica_tz)
             end_date = timezone.now()+ datetime.timedelta(days=7)
+            
             if "begin_date" in request.query_params and "end_date" in request.query_params:
                 begin_date = request.query_params['begin_date']
                 end_date = request.query_params['end_date']
