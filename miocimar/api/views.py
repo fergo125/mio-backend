@@ -230,7 +230,7 @@ class DrupalTidesViewset(ViewSet):
                 date__lt=end_date,\
                 tide_region=request.query_params['tide_region'])
             previous_day = begin_date - datetime.timedelta(days=1)
-            previous_day_items = TideEntry.objects.filter(date__gt=previous_day,date__lt=begin_date)
+            previous_day_items = TideEntry.objects.filter(date__gt=previous_day,date__lt=begin_date,tide_region=request.query_params['tide_region'])
             previous_day_last_item = previous_day_items[len(previous_day_items)-1]
             epoch = datetime.datetime.now(costa_rica_tz)
             epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
@@ -239,7 +239,7 @@ class DrupalTidesViewset(ViewSet):
             response_list.append([last_item_date,previous_day_last_item.tide_height])
             for tide in actual_tides:
                 response_elements = list()
-                #tide_date = int((tide.date.replace(tzinfo=None) - epoch).total_seconds()*1000)
+
                 tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
                 response_list.append([tide_date,tide.tide_height])
             medium_level = (TideRegion.objects.filter(id = request.query_params['tide_region'])[0]).medium_level
@@ -249,20 +249,3 @@ class DrupalTidesViewset(ViewSet):
             status_return = status.HTTP_200_OK
             print(response_dict)
             return Response(response_dict,status= status_return)
-        # for key in request.data:
-        #     print('key: '+ key)
-        # if "tide_region" not in request.data:
-        #     logger.error("tide_region not found in request")
-        #     status_return = status.HTTP_404_NOT_FOUND
-        #     content = {'Message':'tide_region not found in request'}
-        #     return Response(content,status=status_return)
-        # else:
-        #     actual_tides = TideEntry.objects.filter(date__gt=datetime.datetime.now(),\
-        #         date__lt=(datetime.datetime.now()+ datetime.timedelta(days=3)),\
-        #         tide_region=request.data['tide_region'])
-        #     epoch = datetime.datetime.utcfromtimestamp(0)
-        #     response_tides = dict()
-        #     for tide in actual_tides:
-        #         tide_date = int((tide.date- epoch).total_seconds() * 1000)
-        #         response_tides[tide_date]=tide.tide_height
-        #     return Response(json.dumps(response_tides))
