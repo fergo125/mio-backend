@@ -56,6 +56,7 @@ class TideRegion(models.Model):
     large_icon_url = models.CharField(max_length=200)
     medium_level = models.FloatField()
     order = models.IntegerField()
+    mean_Highest_Tides = models.FloatField()
 
     def __unicode__(self):
         return self.name
