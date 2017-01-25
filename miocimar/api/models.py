@@ -32,19 +32,7 @@ class LocalForecastEntry(models.Model):
     wind_direction = models.FloatField()
     wind_speed = models.FloatField()
     wind_burst = models.FloatField()
-    """
-    @classmethod
-    def create(cls,values):
-        localForecastEntry = cls(local_forecast=values['local_forecast'],\
-        date = values['date'],\
-        wave_direction = values['wave_direction'],\
-        wave_height_sig = values['wave_height_sig'],\
-        wave_height_max = values['wave_height_max'],\
-        wave_period = values['wave_period'],\
-        wind_direction = values['wind_direction'],\
-        wind_speed = values['wind_speed'],\
-        wind_burst = values['wind_burst'])
-    """
+
 class TideRegion(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)

@@ -240,9 +240,10 @@ class DrupalTidesViewset(ViewSet):
 
                 tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
                 response_list.append([tide_date,tide.tide_height])
-            medium_level = (TideRegion.objects.filter(id = request.query_params['tide_region'])[0]).medium_level
+            tr = (TideRegion.objects.filter(id = request.query_params['tide_region'])[0])
             response_dict = dict()
-            response_dict['medium_level'] = medium_level
+            response_dict['medium_level'] = tr.medium_level
+            response_dict['mean_highest_tides'] =tr.mean_highest_tides
             response_dict['days'] = response_list
             status_return = status.HTTP_200_OK
             print(response_dict)
