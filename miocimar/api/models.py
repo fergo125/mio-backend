@@ -18,6 +18,7 @@ class LocalForecast(models.Model):
     # This comment should be updated each time a new Drupal
     # article appears
     comment = models.CharField(max_length=4000)
+    region_map_url = models.CharField(max_length=200)
     def __unicode__(self):
         return self.name
 
