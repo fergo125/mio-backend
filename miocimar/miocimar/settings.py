@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'eo)+35$-^#0fm*7uv$uigsiywp83j=1sri7e@=8r)@i$17hfci'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -52,7 +53,13 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_WHITELIST = (
+    'miocimar.ucr.ac.cr',
+    'miocimar-test.ucr.ac.cr'
+)
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
@@ -87,8 +94,14 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':'d7g4vjk9tukvl1',
+        'USER':'hhpsqoxqzsisbq',
+        'PASSWORD':'SQx0UDJ2CkYmV5-bXNZ3d7b0bf',
+        'PORT':'5432',
+        'HOST':'ec2-54-83-44-229.compute-1.amazonaws.com'
     }
 }
 

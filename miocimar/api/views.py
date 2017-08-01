@@ -11,6 +11,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import mixins
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import timezone
+from dateutil.tz import tzlocal
 import datetime
 import automation.data_update as data_updater
 import json
@@ -18,6 +20,7 @@ import time
 import dateutil.parser
 import itertools
 import thread
+import pytz
 
 logger = logging.getLogger("mioLogger")
 
@@ -203,3 +206,45 @@ class UpdateWarningDataViewSet(ViewSet):
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
     serializer_class = RegionalForecastSerializer
+
+class DrupalTidesViewset(ViewSet):
+    def list(self,request,format):
+        print(request.query_params)
+        print(request.data)
+        if "tide_region" not in request.query_params:
+            logger.error("tide_region not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'tide_region not found in request'}
+            return Response(content,status=status_return)
+        else:
+            costa_rica_tz = pytz.timezone('America/Costa_Rica')
+            begin_date = datetime.datetime.now(costa_rica_tz)
+            if "begin_date" in request.query_params:
+                begin_date = datetime.datetime.strptime(request.query_params['begin_date'],"%d-%m-%Y")
+            end_date = begin_date + datetime.timedelta(days=7)
+            begin_date = begin_date.replace(hour=0,minute=0,microsecond=0)
+            end_date = end_date.replace(hour=0,minute=0,microsecond=0)
+            actual_tides = TideEntry.objects.filter(date__gt=begin_date,\
+                date__lt=end_date,\
+                tide_region=request.query_params['tide_region'])
+            previous_day = begin_date - datetime.timedelta(days=1)
+            previous_day_items = TideEntry.objects.filter(date__gt=previous_day,date__lt=begin_date,tide_region=request.query_params['tide_region'])
+            previous_day_last_item = previous_day_items[len(previous_day_items)-1]
+            epoch = datetime.datetime.now(costa_rica_tz)
+            epoch = epoch.replace(year=1970,month=1,day=1,hour=0,minute=0,second=0,microsecond=0)
+            response_list = list()
+            last_item_date = int((previous_day_last_item.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
+            response_list.append([last_item_date,previous_day_last_item.tide_height])
+            for tide in actual_tides:
+                response_elements = list()
+
+                tide_date = int((tide.date.replace(tzinfo=epoch.tzinfo) - epoch).total_seconds()*1000)
+                response_list.append([tide_date,tide.tide_height])
+            tr = (TideRegion.objects.filter(id = request.query_params['tide_region'])[0])
+            response_dict = dict()
+            response_dict['medium_level'] = tr.medium_level
+            response_dict['mean_highest_tides'] =tr.mean_highest_tides
+            response_dict['days'] = response_list
+            status_return = status.HTTP_200_OK
+            print(response_dict)
+            return Response(response_dict,status= status_return)
