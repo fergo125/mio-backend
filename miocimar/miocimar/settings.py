@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'eo)+35$-^#0fm*7uv$uigsiywp83j=1sri7e@=8r)@i$17hfci'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -87,8 +87,14 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':'d1o1t4qa1af3v1',
+        'USER':'hksszfjzcdjcem',
+        'PASSWORD':'721c6a723b8b8e6e940ee8e8376fb2ac5d1ce2eddfba0d272542dcf64fd69229',
+        'PORT':'5432',
+        'HOST':'ec2-107-21-205-25.compute-1.amazonaws.com'
     }
 }
 

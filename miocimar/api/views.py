@@ -200,6 +200,25 @@ class UpdateWarningDataViewSet(ViewSet):
             content = {'Updated':node_id,'Element-type':"Warning entry"}
         return Response(content, status=status_return)
 
+class RegionalForecastSlides(ViewSet):
+    def list(self,request):
+        status_return = status.HTTP_200_OK
+        print(request.query_params)
+        if "region_id" not in request.query_params:
+            logger.error("node_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            region_id = request.query_params["region_id"]
+            slides = SlideForecastImage.objects.filter(forecast_id=region_id)
+            print("DB reached")
+            serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
+            content = serializer.data
+        return Response(content,status=status_return)
+
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
     serializer_class = RegionalForecastSerializer
+    # def list(self,request):
+    #     print(queryset)
+    #     return Response(status=status.HTTP_200_OK)

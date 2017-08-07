@@ -33,3 +33,7 @@ class RegionalForecastSerializer(serializers.ModelSerializer):
 class WaveWarningSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaveWarning
+
+class SlideForecastImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SlideForecastImage
