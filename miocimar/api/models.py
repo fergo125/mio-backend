@@ -92,3 +92,10 @@ class WaveWarning(models.Model):
 
     def __unicode__(self):
         return self.title
+
+
+class SlideForecastImage(models.Model):
+    id = models.AutoField(primary_key=True)
+    timestamp = models.DateTimeField()
+    url = models.CharField(max_length=400)
+    forecast_id = models.ForeignKey(RegionalForecast, on_delete=models.CASCADE)

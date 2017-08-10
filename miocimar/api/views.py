@@ -264,3 +264,31 @@ class DrupalTidesViewset(ViewSet):
             status_return = status.HTTP_200_OK
             print(response_dict)
             return Response(response_dict,status= status_return)
+
+class RegionalForecastSlides(ViewSet):
+    def list(self,request):
+        status_return = status.HTTP_200_OK
+        print(request.query_params)
+        if "forecast_id" not in request.query_params:
+            logger.error("forecast_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            forecast_id = request.query_params["forecast_id"]
+            slides = SlideForecastImage.objects.filter(forecast_id=forecast_id)
+            print("DB reached")
+            serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
+            content = serializer.data
+        return Response(content,status=status_return)
+    def create(self, request):
+        status_return = status.HTTP_200_OK
+        slides_data = serializers.SlideForecastImageSerializer(request.query_params, many=True)
+        if slides_data.is_valid():
+            slides_data.save()
+            logger.debug('Slides data updated')
+            content = {'Slides data added'}
+        else:
+            logger.error("node_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'Wrong slides data format'}
+        return Response(content, status=status_return)

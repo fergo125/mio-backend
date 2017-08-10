@@ -35,5 +35,7 @@ class WaveWarningSerializer(serializers.ModelSerializer):
         model = WaveWarning
 
 class SlideForecastImageSerializer(serializers.ModelSerializer):
+    regional_forecast = serializers.PrimaryKeyRelatedField(queryset=RegionalForecast)
     class Meta:
         model = SlideForecastImage
+        fields = ('timestamp','url','regional_forecast')
