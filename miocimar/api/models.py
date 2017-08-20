@@ -45,7 +45,7 @@ class TideRegion(models.Model):
     large_icon_url = models.CharField(max_length=200)
     medium_level = models.FloatField()
     order = models.IntegerField()
-    mean_highest_tides = models.FloatField()
+    mean_highest_tides = models.FloatField(default=0)
 
     def __unicode__(self):
         return self.name
@@ -55,7 +55,7 @@ class TideEntry(models.Model):
     id = models.AutoField(primary_key=True)
     tide_region = models.ForeignKey(TideRegion, on_delete=models.CASCADE)
     date = models.DateTimeField()
-    tide_height = models.FloatField(    )
+    tide_height = models.FloatField()
     is_high_tide = models.BooleanField()
     moon = models.IntegerField()
 
@@ -78,7 +78,7 @@ class RegionalForecast(models.Model):
 
 class SlideForecastImage(models.Model):
     id = models.AutoField(primary_key=True)
-    timestamp = models.DateTimeField()
+    date = models.DateTimeField()
     url = models.CharField(max_length=400)
     forecast_id = models.ForeignKey(RegionalForecast, on_delete=models.CASCADE)
 
@@ -92,10 +92,3 @@ class WaveWarning(models.Model):
 
     def __unicode__(self):
         return self.title
-
-
-class SlideForecastImage(models.Model):
-    id = models.AutoField(primary_key=True)
-    timestamp = models.DateTimeField()
-    url = models.CharField(max_length=400)
-    forecast_id = models.ForeignKey(RegionalForecast, on_delete=models.CASCADE)

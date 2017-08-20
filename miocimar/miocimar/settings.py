@@ -92,20 +92,19 @@ WSGI_APPLICATION = 'miocimar.wsgi.application'
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 
- DATABASES['default'] =dj_database_url.config()
- #{
-#     'default': {
-#         # 'ENGINE': 'django.db.backends.sqlite3',
-#         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         'ENGINE':'django.db.backends.postgresql_psycopg2',
-#         'NAME':'d7g4vjk9tukvl1',
-#         'USER':'hhpsqoxqzsisbq',
-#         'PASSWORD':'SQx0UDJ2CkYmV5-bXNZ3d7b0bf',
-#         'PORT':'5432',
-#         'HOST':'ec2-54-83-44-229.compute-1.amazonaws.com'
-#
-#     }
-# }
+DATABASES ={
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE':'django.db.backends.postgresql_psycopg2',
+        'NAME':'dcsrre56v72uef',
+        'USER':'qdqjjxhaplxkvs',
+        'PASSWORD':'5293edc061a8036b18e4351d12d3174aa10d03d001c6b442eb32361e1ced66d6',
+        'PORT':'5432',
+        'HOST':'ec2-107-20-188-239.compute-1.amazonaws.com'
+
+    }
+}
 
 
 # Password validation
