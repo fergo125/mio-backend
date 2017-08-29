@@ -253,9 +253,9 @@ class RegionalForecastSlides(ViewSet):
     def list(self,request):
         status_return = status.HTTP_200_OK
         if "taxonomy_id" not in request.query_params:
-            logger.error("forecast_id not found in request")
+            logger.error("taxonomy_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
-            content = {'Message':'forecast_id not found in request'}
+            content = {'Message':'taxonomy_id not found in request'}
         else:
             taxonomy_id = request.query_params["taxonomy_id"]
             slides = SlideForecastImage.objects.filter(forecast_id=RegionalForecast.objects.get(taxonomy_id=taxonomy_id).pk)
