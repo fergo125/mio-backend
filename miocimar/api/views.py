@@ -203,6 +203,22 @@ class UpdateWarningDataViewSet(ViewSet):
             content = {'Updated':node_id,'Element-type':"Warning entry"}
         return Response(content, status=status_return)
 
+class RegionalForecastSlides(ViewSet):
+    def list(self,request):
+        status_return = status.HTTP_200_OK
+        print(request.query_params)
+        if "region_id" not in request.query_params:
+            logger.error("node_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'node_id not found in request'}
+        else:
+            region_id = request.query_params["region_id"]
+            slides = SlideForecastImage.objects.filter(forecast_id=region_id)
+            print("DB reached")
+            serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
+            content = serializer.data
+        return Response(content,status=status_return)
+
 class RegionalForecastViewSet(ModelViewSet):
     queryset = RegionalForecast.objects.all()
     serializer_class = RegionalForecastSerializer
@@ -248,3 +264,37 @@ class DrupalTidesViewset(ViewSet):
             status_return = status.HTTP_200_OK
             print(response_dict)
             return Response(response_dict,status= status_return)
+
+class RegionalForecastSlides(ViewSet):
+    def list(self,request):
+        status_return = status.HTTP_200_OK
+        print(request.query_params)
+        if "taxonomy_id" not in request.query_params:
+            logger.error("forecast_id not found in request")
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'forecast_id not found in request'}
+        else:
+            taxonomy_id = request.query_params["taxonomy_id"]
+            slides = SlideForecastImage.objects.filter(forecast_id=RegionalForecast.objects.get(taxonomy_id=taxonomy_id).pk)
+            print("DB reached")
+            serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
+            content = serializer.data
+        return Response(content,status=status_return)
+    def create(self, request):
+        status_return = status.HTTP_200_OK
+        print(request.data)
+        slides_data = request.data
+        slides_forecast_id = RegionalForecast.objects.get(taxonomy_id = slides_data[0]['forecast_id']).pk
+        SlideForecastImage.objects.filter(forecast_id = slides_forecast_id).delete()
+        for slide_data in slides_data:
+            slide_data['forecast_id'] = slides_forecast_id
+        serialize_data = SlideForecastImageSerializer(data =slides_data, many=True)
+        if serialize_data.is_valid():
+            serialize_data.save()
+            logger.debug('Slides data updated')
+            content = {'Slides data added'}
+        else:
+            logger.error(serialize_data.errors)
+            status_return = status.HTTP_404_NOT_FOUND
+            content = {'Message':'Wrong slides data format'}
+        return Response(content, status=status_return)

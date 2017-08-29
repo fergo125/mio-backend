@@ -1,0 +1,73 @@
+[{
+  "model": "api.SlideForecastImage",
+  "pk": 1,
+  "fields": {
+    "date": "2017-06-30T01:00:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 2,
+  "fields": {
+    "date": "2017-06-30T01:30:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 3,
+  "fields": {
+    "date": "2017-06-30T02:00:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 4,
+  "fields": {
+    "date": "2017-06-30T03:00:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 5,
+  "fields": {
+    "date": "2017-06-30T03:30:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 6,
+  "fields": {
+    "date": "2017-06-30T02:30:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 7,
+  "fields": {
+    "date": "2017-06-30T04:00:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 8,
+  "fields": {
+    "date": "2017-06-30T04:30:48Z",
+    "url": "http://...",
+    "forecast_id":14
+  }
+}, {
+  "model": "api.SlideForecastImage",
+  "pk": 8,
+  "fields": {
+    "date": "2017-06-30T05:00:48Z",
+    "url": "http://...",
+    "forecast_id":15
+  }
+}]

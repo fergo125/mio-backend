@@ -33,3 +33,9 @@ class RegionalForecastSerializer(serializers.ModelSerializer):
 class WaveWarningSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaveWarning
+
+class SlideForecastImageSerializer(serializers.ModelSerializer):
+    # forecast_id = serializers.PrimaryKeyRelatedField(queryset=RegionalForecast.objects.all())
+    class Meta:
+        model = SlideForecastImage
+        # fields = ('date','url','forecast_id')
