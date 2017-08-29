@@ -80,7 +80,7 @@ class SlideForecastImage(models.Model):
     id = models.AutoField(primary_key=True)
     date = models.DateTimeField()
     url = models.CharField(max_length=400)
-    forecast_id = models.ForeignKey(RegionalForecast, on_delete=models.CASCADE)
+    forecast_id = models.ForeignKey(RegionalForecast, related_name='slides', on_delete=models.CASCADE)
 
 class WaveWarning(models.Model):
     id = models.AutoField(primary_key=True)

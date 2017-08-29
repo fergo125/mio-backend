@@ -26,10 +26,6 @@ class LocalForecastEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = LocalForecastEntry
 
-class RegionalForecastSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RegionalForecast
-
 class WaveWarningSerializer(serializers.ModelSerializer):
     class Meta:
         model = WaveWarning
@@ -39,3 +35,9 @@ class SlideForecastImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = SlideForecastImage
         # fields = ('date','url','forecast_id')
+
+class RegionalForecastSerializer(serializers.ModelSerializer):
+    slides = SlideForecastImageSerializer(many=True, read_only=True)
+    class Meta:
+        model = RegionalForecast
+        fields = ('id', 'taxonomy_id', 'name', 'english_name', 'date', 'text', 'animation_url', 'scale_bar_url', 'slides')

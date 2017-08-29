@@ -252,7 +252,6 @@ class DrupalTidesViewset(ViewSet):
 class RegionalForecastSlides(ViewSet):
     def list(self,request):
         status_return = status.HTTP_200_OK
-        print(request.query_params)
         if "taxonomy_id" not in request.query_params:
             logger.error("forecast_id not found in request")
             status_return = status.HTTP_404_NOT_FOUND
@@ -260,13 +259,11 @@ class RegionalForecastSlides(ViewSet):
         else:
             taxonomy_id = request.query_params["taxonomy_id"]
             slides = SlideForecastImage.objects.filter(forecast_id=RegionalForecast.objects.get(taxonomy_id=taxonomy_id).pk)
-            print("DB reached")
             serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
             content = serializer.data
         return Response(content,status=status_return)
     def create(self, request):
         status_return = status.HTTP_200_OK
-        print(request.data)
         slides_data = request.data
         slides_forecast_id = RegionalForecast.objects.get(taxonomy_id = slides_data[0]['forecast_id']).pk
         SlideForecastImage.objects.filter(forecast_id = slides_forecast_id).delete()
