@@ -36,8 +36,13 @@ class SlideForecastImageSerializer(serializers.ModelSerializer):
         model = SlideForecastImage
         # fields = ('date','url','forecast_id')
 
+class SlideForecastImageNoFKSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SlideForecastImage
+        fields = ('id','date','url')
+
 class RegionalForecastSerializer(serializers.ModelSerializer):
-    slides = SlideForecastImageSerializer(many=True, read_only=True)
+    slides = SlideForecastImageNoFKSerializer(many=True, read_only=True)
     class Meta:
         model = RegionalForecast
         fields = ('id', 'taxonomy_id', 'name', 'english_name', 'date', 'text', 'animation_url', 'scale_bar_url', 'slides')
