@@ -206,8 +206,8 @@ class UpdateWarningDataViewSet(ViewSet):
         else:
             node_id = request.data["node_id"]
             logger.debug("Local Forecast update, node id: {0}".format(node_id))
-            thread.start_new_thread(data_updater.warningUpdate,(node_id,))
-            content = {'Updated':node_id,'Element-type':"Warning entry"}
+            thread.start_new_thread(data_updater.warningUpdate, (node_id,))
+            content = {'Updated':node_id, 'Element-type':"Warning entry"}
         return Response(content, status=status_return)
 
 class RegionalForecastViewSet(ModelViewSet):
@@ -254,7 +254,7 @@ class DrupalTidesViewset(ViewSet):
             response_dict['days'] = response_list
             status_return = status.HTTP_200_OK
             print(response_dict)
-            return Response(response_dict,status= status_return)
+            return Response(response_dict, status= status_return)
 
 class RegionalForecastSlides(ViewSet):
     def list(self,request):
@@ -265,8 +265,6 @@ class RegionalForecastSlides(ViewSet):
             status_return = status.HTTP_404_NOT_FOUND
             content = {'Message':'taxonomy_id not found in request'}
         else:
-            #taxonomy_id = request.query_params["taxonomy_id"]
-            #slides = SlideForecastImage.objects.filter(forecast_id=RegionalForecast.objects.get(taxonomy_id=taxonomy_id).pk)
             slides = SlideForecastImage.objects.filter(forecast_id=request.query_params['forecast_id'])
             print("DB reached")
             serializer = SlideForecastImageSerializer(slides,context={'request':request},many=True)
@@ -275,11 +273,12 @@ class RegionalForecastSlides(ViewSet):
     def create(self, request):
         status_return = status.HTTP_200_OK
         slides_data = request.data
-        slides_forecast_id = slides_data['forecast_id']
+        print(slides_data)
+        slides_forecast_id = slides_data[0]['forecast_id']
         #slides_forecast_id = RegionalForecast.objects.get(taxonomy_id = slides_data[0]['forecast_id']).pk
         SlideForecastImage.objects.filter(forecast_id = slides_forecast_id).delete()
-        for slide_data in slides_data:
-            slide_data['forecast_id'] = slides_forecast_id
+        # for slide_data in slides_data:
+        #     slide_data['forecast_id'] = slides_forecast_id
         serialize_data = SlideForecastImageSerializer(data =slides_data, many=True)
         if serialize_data.is_valid():
             serialize_data.save()
