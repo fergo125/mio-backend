@@ -92,3 +92,22 @@ class WaveWarning(models.Model):
 
     def __unicode__(self):
         return self.title
+
+class Language(models.Model):
+    # Language object (used for localization/internationalization)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=30)
+    code = models.CharField(max_length=2)
+
+    def __unicode__(self):
+        return self.name
+
+class LocalForecastTranslation(models.Model):
+    # Object which contains translations for LocalForecast (regions)
+    id = models.AutoField(primary_key=True)
+    language = models.ForeignKey(Language, related_name="language")
+    forecast = models.ForeignKey(LocalForecast, related_name="forecast")
+    wind_text = models.TextField()
+    wave_text = models.TextField()
+    temp_text = models.TextField()
+    salt_text = models.TextField()
