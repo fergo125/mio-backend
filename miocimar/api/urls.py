@@ -11,7 +11,8 @@ router.register(r'warnings', views.WaveWarningViewSet)
 router.register(r'local_forecast_entry', views.LocalForecastEntryViewSet, 'local_forecast_entry')
 router.register(r'regional_forecasts', views.RegionalForecastViewSet, 'regional_forecasts')
 router.register(r'regional_forecasts_slides', views.RegionalForecastSlides, 'regional_forecasts_slides')
-
+router.register(r'languages', views.LanguageViewSet, 'languages')
+router.register(r'local_forecast_translations', views.LocalForecastTranslationViewSet, 'local_forecast_translations')
 
 # Drupal connection endpoint
 router.register(r'update_local_forecast_data', views.UpdateLocalForecastDataViewSet, 'update_local_forecast_data')

@@ -92,6 +92,13 @@ class LocalForecastsViewSet(ModelViewSet):
     queryset = LocalForecast.objects.all()
     serializer_class = LocalForecastSerializer
 
+    def get_serializer_context(self):
+        return {
+            'request': self.request,
+            # Pass the language header in the serializer context
+            'lang': self.request.META.get('HTTP_ACCEPT_LANGUAGE')
+        }
+
     @detail_route(methods=['get'])
     def weekly_view(self, request, **kwargs):
         """Obtain a list of local forecast entries for this local forecast
@@ -282,3 +289,11 @@ class RegionalForecastSlides(ViewSet):
             status_return = status.HTTP_404_NOT_FOUND
             content = {'Message':'Wrong slides data format'}
         return Response(content, status=status_return)
+
+class LanguageViewSet(ModelViewSet):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+
+class LocalForecastTranslationViewSet(ModelViewSet):
+    queryset = LocalForecastTranslation.objects.all()
+    serializer_class = LocalForecastTranslationSerializer
