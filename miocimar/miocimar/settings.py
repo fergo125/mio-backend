@@ -97,14 +97,16 @@ DATABASES ={
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME':'dcsrre56v72uef',
-        'USER':'qdqjjxhaplxkvs',
-        'PASSWORD':'5293edc061a8036b18e4351d12d3174aa10d03d001c6b442eb32361e1ced66d6',
+        'NAME':'d43jfqac80iokg',
+        'USER':'ogzscqgvismfvi',
+        'PASSWORD':'bd2855cd199d48a3363542f5bbdb99979d79f587887bf53634330f40c744a90f',
         'PORT':'5432',
-        'HOST':'ec2-107-20-188-239.compute-1.amazonaws.com'
+        'HOST':'ec2-50-19-105-113.compute-1.amazonaws.com'
 
     }
 }
+
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
