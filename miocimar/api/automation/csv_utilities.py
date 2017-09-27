@@ -131,6 +131,7 @@ class CSVProcessor:
 		fn = ['date','wave_height_sig','wave_height_max','wave_direction','wave_period','u-component_of_wind_height_above_ground','v-component_of_wind_height_above_ground']
 		data= list()
 		print "Will read with DictReader"
+		print(array_of_lines)
 		readerCSV = csv.DictReader(array_of_lines,fieldnames=fn)
 		print "Did read with DictReader"
 		for rue in readerCSV:
