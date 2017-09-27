@@ -288,15 +288,17 @@ class RegionalForecastSlides(ViewSet):
 		status_return = status.HTTP_200_OK
 		slides_data = request.data
 		print(slides_data)
+		result_slides = []
 		slides_forecast_id = slides_data[0]['forecast_id']
 		#slides_forecast_id = RegionalForecast.objects.get(taxonomy_id = slides_data[0]['forecast_id']).pk
 		SlideForecastImage.objects.filter(forecast_id = slides_forecast_id).delete()
 		for slide in slides_data:
-			if datetime.datetime.strptime(slide["date"],"%Y-%m-%dT%H:%M:%S").hour % 6 != 0:
-				del slide
+			if datetime.datetime.strptime(slide["date"],"%Y-%m-%dT%H:%M:%S").hour % 6 == 0:
+				result_slides.append(slide)
+		print(result_slides)
 		# for slide_data in slides_data:
 		#     slide_data['forecast_id'] = slides_forecast_id
-		serialize_data = SlideForecastImageSerializer(data =slides_data, many=True)
+		serialize_data = SlideForecastImageSerializer(data =result_slides, many=True)
 		if serialize_data.is_valid():
 			serialize_data.save()
 			logger.debug('Slides data updated')
