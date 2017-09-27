@@ -280,6 +280,9 @@ class RegionalForecastSlides(ViewSet):
         # for slide_data in slides_data:
         #     slide_data['forecast_id'] = slides_forecast_id
         serialize_data = SlideForecastImageSerializer(data =slides_data, many=True)
+		for slide in serialze_data:
+			if slide.date.hour % 6 != 0:
+				del slide
         if serialize_data.is_valid():
             serialize_data.save()
             logger.debug('Slides data updated')

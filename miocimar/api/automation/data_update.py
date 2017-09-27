@@ -114,7 +114,8 @@ def localForecastUpdate(node_id):
         updateLocalForecastText(model_data_dict['text'],model_data_dict['local_forecast_taxonomy_id'])
     return True
 
-
+def proces_csv_parameters():
+	return True
 def saveLocalForecastEntries(data_json):
     print "Saving local forecast entries"
     serialized_list = serializers.LocalForecastEntryCreateSerializer(data=data_json, many=True)
