@@ -101,17 +101,14 @@ class LocalForecastsViewSet(ModelViewSet):
 
 	@detail_route(methods=['get'])
 	def weekly_view(self, request, **kwargs):
-		"""Obtain a list of local forecast entries for this local forecast
-		region for this week
-		"""
 		local_forecast_region = self.get_object()
 		pk = local_forecast_region.pk
 
 		# Find latest record
 		latest = LocalForecastEntry.objects.filter(local_forecast=pk) \
 			.order_by('-date')[:1][0]
-		start_date = latest.date - datetime.timedelta(days=7)
-
+		start_date = datetime.datetime.today()
+		end_date = start_date + datetime.datetime.timedelta(days=7)
 		local_forecast_entries = LocalForecastEntry.objects \
 			.filter(date__gt=start_date) \
 			.filter(local_forecast=pk)
