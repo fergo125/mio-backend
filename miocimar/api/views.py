@@ -108,7 +108,7 @@ class LocalForecastsViewSet(ModelViewSet):
 			.order_by('-date')[:1][0]
 		print("Exact hour", datetime.datetime.today())
 		start_date = datetime.datetime.today()
-		start_date -= datetime.timedelta(hour=6)
+		start_date -= datetime.timedelta(hours=6)
 		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
 		print("start date", start_date)
 		end_date = start_date + datetime.timedelta(days=7)
