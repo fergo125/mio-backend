@@ -108,13 +108,18 @@ class LocalForecastsViewSet(ModelViewSet):
 			.order_by('-date')[:1][0]
 		print("Exact hour", datetime.datetime.today())
 		start_date = datetime.datetime.today()
+		
 		start_date -= datetime.timedelta(hours=6)
-		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
+		print("Hour with adjustment", start_date)
+		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0) - datetime.timedelta(minutes=1)
+		end_date = start_date + datetime.timedelta(days=7) 
+		#end_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
 		print("start date", start_date)
-		end_date = start_date + datetime.timedelta(days=7)
+		print("end date", end_date)
 		local_forecast_entries = LocalForecastEntry.objects \
 			.filter(date__gt=start_date) \
 			.filter(local_forecast=pk)
+		print("cantidad de datos", len(local_forecast_entries))
 		serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
 		return Response(serializer.data)
 	
