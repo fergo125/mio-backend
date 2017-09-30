@@ -118,7 +118,7 @@ class LocalForecastsViewSet(ModelViewSet):
 		print("end date", end_date)
 		local_forecast_entries = LocalForecastEntry.objects \
 			.filter(date__gt=start_date) \
-			.filter(date_lt=end_date)\
+			.filter(date__lte=end_date)\
 			.filter(local_forecast=pk)
 		print("cantidad de datos", len(local_forecast_entries))
 		serializer = LocalForecastEntrySerializer(local_forecast_entries, context={'request': request}, many=True)
