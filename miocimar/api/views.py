@@ -107,7 +107,9 @@ class LocalForecastsViewSet(ModelViewSet):
 		latest = LocalForecastEntry.objects.filter(local_forecast=pk) \
 			.order_by('-date')[:1][0]
 		print("Exact hour", datetime.datetime.today())
-		start_date = datetime.datetime.today().replace(hour=0).replace(minute=0).replace(second=0)
+		start_date = datetime.datetime.today()
+		start_date -= datetime.timedelta(hour=6)
+		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
 		print("start date", start_date)
 		end_date = start_date + datetime.timedelta(days=7)
 		local_forecast_entries = LocalForecastEntry.objects \
