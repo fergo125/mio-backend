@@ -111,7 +111,7 @@ class LocalForecastsViewSet(ModelViewSet):
 		
 		start_date -= datetime.timedelta(hours=6)
 		print("Hour with adjustment", start_date)
-		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0) - datetime.timedelta(minutes=1)
+		start_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
 		end_date = start_date + datetime.timedelta(days=7) 
 		#end_date = start_date.replace(hour=0).replace(minute=0).replace(second=0)
 		print("start date", start_date)
