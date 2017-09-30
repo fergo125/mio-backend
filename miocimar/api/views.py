@@ -103,10 +103,10 @@ class LocalForecastsViewSet(ModelViewSet):
 	def weekly_view(self, request, **kwargs):
 		local_forecast_region = self.get_object()
 		pk = local_forecast_region.pk
-
 		# Find latest record
 		latest = LocalForecastEntry.objects.filter(local_forecast=pk) \
 			.order_by('-date')[:1][0]
+		print("Exact hour", datetime.datetime.today())
 		start_date = datetime.datetime.today().replace(hour=0).replace(minute=0).replace(second=0)
 		print("start date", start_date)
 		end_date = start_date + datetime.timedelta(days=7)
