@@ -1,7 +1,16 @@
 from __future__ import unicode_literals
 from django.db import models
 
+"""
+Stores the localforecasts info data for each region of the forecasts 
+"""
+
 class LocalForecast(models.Model):
+	"""LocalForecasts model with metadata relative to 
+	the location and other characteristics of the forecast
+	for mobile and web. It stores the comments and saves 
+	different images resolutions for mobile and web"""
+
     id = models.AutoField(primary_key=True)
     taxonomy_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=50)
@@ -23,6 +32,9 @@ class LocalForecast(models.Model):
         return self.name
 
 class LocalForecastEntry(models.Model):
+	"""
+	Stores the variables' entries the for a specific local forecast region.
+	"""
     id = models.AutoField(primary_key=True)
     local_forecast = models.ForeignKey(LocalForecast, on_delete =models.CASCADE)
     date = models.DateTimeField()
@@ -35,6 +47,9 @@ class LocalForecastEntry(models.Model):
     wind_burst = models.FloatField()
 
 class TideRegion(models.Model):
+	"""
+	Model for tides regions with metadata of each tide region 
+	of the forecast.It stores different image resolutions for mobile and web"""
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
     # If available
@@ -52,6 +67,9 @@ class TideRegion(models.Model):
 
 
 class TideEntry(models.Model):
+	"""
+	Stores the variables' entries the for a specific local forecast region.
+	"""
     id = models.AutoField(primary_key=True)
     tide_region = models.ForeignKey(TideRegion, on_delete=models.CASCADE)
     date = models.DateTimeField()
@@ -101,6 +119,7 @@ class Language(models.Model):
 
     def __unicode__(self):
         return self.name
+
 
 class LocalForecastTranslation(models.Model):
     # Object which contains translations for LocalForecast (regions)

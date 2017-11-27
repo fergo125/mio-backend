@@ -27,6 +27,10 @@ logger = logging.getLogger("mioLogger")
 class TideRegionViewSet(ModelViewSet):
 	"""Tide regions view set, which also includes a weekly view for
 	its tide entries.
+
+	get:
+	Obtain a list of tide entries for this tide region for this
+		week
 	"""
 	queryset = TideRegion.objects.all()
 	serializer_class = TideRegionSerializer
@@ -88,7 +92,7 @@ class WaveWarningViewSet(ModelViewSet):
 		return Response(serializer.data)
 
 class LocalForecastsViewSet(ModelViewSet):
-	""" Local forecasts view set """
+	"""Collection of endpoint for Local"""
 	queryset = LocalForecast.objects.all()
 	serializer_class = LocalForecastSerializer
 
@@ -137,6 +141,10 @@ class LocalForecastsViewSet(ModelViewSet):
 		return Response(content, status=status_return)
 
 class LocalForecastEntryViewSet(ModelViewSet):
+	"""Forecast endpoint for creating new forecast entries based
+	on new csv files added on the drupal webpage.
+	Ask if this endpoint is really used"""
+
 	queryset = LocalForecastEntry.objects.all()
 	serializer_class = LocalForecastEntrySerializer
 
@@ -188,6 +196,8 @@ class LocalForecastEntryViewSet(ModelViewSet):
 
 # Drupal connection endpoints
 class UpdateLocalForecastDataViewSet(ViewSet):
+	"""Local Forecast update endpoint. When the forecast is updated in the Drupal webpage, 
+	it sends a csv to the API in order to update the forecast entries"""
 	def create(self, request):
 		status_return = status.HTTP_200_OK
 		time.sleep(5)
@@ -203,6 +213,8 @@ class UpdateLocalForecastDataViewSet(ViewSet):
 		return Response(content, status=status_return)
 
 class UpdateRegionalForecastDataViewSet(ViewSet):
+	"""Regional Forecast update endpoint. When the forecast is updated in the Drupal webpage, 
+	it sends a JSON with its content and the """
 	def create(self, request):
 		status_return = status.HTTP_200_OK
 		if "node_id" not in request.data:
@@ -217,6 +229,8 @@ class UpdateRegionalForecastDataViewSet(ViewSet):
 		return Response(content, status=status_return)
 
 class UpdateWarningDataViewSet(ViewSet):
+	"""Warning update endpoint. When a new warning is added in the Drupal webpage, 
+	it sends its content to the endpoint in order to be added in the API"""
 	def create(self, request):
 		status_return = status.HTTP_200_OK
 		if "node_id" not in request.data:
@@ -231,10 +245,16 @@ class UpdateWarningDataViewSet(ViewSet):
 		return Response(content, status=status_return)
 
 class RegionalForecastViewSet(ModelViewSet):
+	"""Enpoint for Reginal Forecasts"""
 	queryset = RegionalForecast.objects.all()
 	serializer_class = RegionalForecastSerializer
 
 class DrupalTidesViewset(ViewSet):
+	"""
+	Enpoint for tides requests handling.
+	list: Returns a list of tides records from a specific TideRegionZone
+	starting from today's date or from a given date.
+	"""
 	def list(self,request,format):
 		print(request.query_params)
 		print(request.data)
@@ -277,6 +297,11 @@ class DrupalTidesViewset(ViewSet):
 			return Response(response_dict, status= status_return)
 
 class RegionalForecastSlides(ViewSet):
+	"""
+		Enpoint for animation slides handling.abs
+		list: Returns a list of slides recently updated and stored in an external domain.
+		create: 
+	"""
 	def list(self,request):
 		status_return = status.HTTP_200_OK
 		print(request.query_params)
@@ -298,6 +323,7 @@ class RegionalForecastSlides(ViewSet):
 		slides_forecast_id = slides_data[0]['forecast_id']
 		#slides_forecast_id = RegionalForecast.objects.get(taxonomy_id = slides_data[0]['forecast_id']).pk
 		SlideForecastImage.objects.filter(forecast_id = slides_forecast_id).delete()
+		#Para evitar problemas a la hora de devolver slides, estos se devuelven unicamente cada 6h
 		for slide in slides_data:
 			if datetime.datetime.strptime(slide["date"],"%Y-%m-%dT%H:%M:%S").hour % 6 == 0:
 				result_slides.append(slide)

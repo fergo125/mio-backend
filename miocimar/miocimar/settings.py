@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
+	'rest_framework_docs',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -64,6 +65,10 @@ CORS_ORIGIN_WHITELIST = (
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
     'PAGE_SIZE': 10
+}
+
+REST_FRAMEWORK_DOCS = {
+    'HIDE_DOCS': False  # Default: False
 }
 
 ROOT_URLCONF = 'miocimar.urls'
